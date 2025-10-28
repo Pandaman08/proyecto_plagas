@@ -1,18 +1,34 @@
-from knowledge.reglas_piña import ReglasPiña
+from experta import KnowledgeEngine
 from knowledge.hechos import Caso
 
-class SistemaExpertoPlagas(ReglasPiña):
+from knowledge.reglas_piña import ReglasPiña
+from knowledge.reglas_uva import ReglasUva
+
+MAPA_CULTIVOS = {
+    "piña": ReglasPiña,
+    "uva": ReglasUva,
+}
+
+class SistemaExpertoPlagas:
     def diagnosticar(self, cultivo: str, sintomas: list):
-        self.reset()
-        self.declare(Caso(cultivo=cultivo.lower(), sintomas=set(sintomas)))
-        self.run()
+        cultivo_key = cultivo.lower()
+        if cultivo_key not in MAPA_CULTIVOS:
+            return {
+                "error": f"Cultivo '{cultivo}' no soportado aún.",
+                "diagnosticos": [],
+                "reglas_activadas": []
+            }
 
-        diagnosticos = []
-        for fact_id, fact in self.facts.items():
-            if isinstance(fact, dict) and 'plaga' in fact:
-                diagnosticos.append(fact)
+        clase_reglas = MAPA_CULTIVOS[cultivo_key]
+        motor = clase_reglas()
+        motor.reset()
+        motor.declare(Caso(cultivo=cultivo_key, sintomas=set(sintomas)))
+        motor.run()
 
-        # Ordenar por certeza descendente
+        diagnosticos = [
+            fact for fact in motor.facts.values()
+            if isinstance(fact, dict) and 'plaga' in fact
+        ]
         diagnosticos.sort(key=lambda x: x.get('certeza', 0), reverse=True)
 
         return {
