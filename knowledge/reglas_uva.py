@@ -19,7 +19,7 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar imidacloprid (Confidor) a 100 ml/200L si hay ataque."
             ],
             regla_activada="filoxera_completa",
-            imagen="filoxera.jpg"
+            imagen="uva/filoxera.jpg"
         ))
 
     @Rule(
@@ -58,7 +58,7 @@ class ReglasUva(KnowledgeEngine):
                 "Rotar acaricidas: Dicofol, Abamectina, Azocyclotin."
             ],
             regla_activada="aranita_roja_completa",
-            imagen="aranita_roja.jpg"
+            imagen="uva/aranita_roja.webp"
         ))
 
     @Rule(
@@ -96,7 +96,7 @@ class ReglasUva(KnowledgeEngine):
                 "Usar aceite agrícola + Azocyclotin o Abamectina si hay ataque."
             ],
             regla_activada="acaro_hialino_completa",
-            imagen="aranita_roja.jpg"  # Reutilizar si no tienes imagen específica
+            imagen="uva/aranita_roja.jpg"  # Reutilizar si no tienes imagen específica
         ))
 
     # --- AVES ---
@@ -116,7 +116,7 @@ class ReglasUva(KnowledgeEngine):
                 "Ahuyentar con espantapájaros o sonidos."
             ],
             regla_activada="aves_completa",
-            imagen="oidium.jpg"  # Reutilizar o cambiar si tienes imagen de aves
+            imagen="uva/oidium.jpeg"  # Reutilizar o cambiar si tienes imagen de aves
         ))
 
     # --- AVISPAS Y ABEJAS ---
@@ -136,7 +136,7 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar Malathion localizado si es necesario."
             ],
             regla_activada="avispas_abejas_completa",
-            imagen="oidium.jpg"  # Reutilizar o cambiar
+            imagen="uva/oidium_avispa.jpg"  # Reutilizar o cambiar
         ))
 
     # --- RATAS Y RATONES ---
@@ -155,7 +155,7 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar rodenticidas anticoagulantes (Cumatetralil, Difetialone) en cebos."
             ],
             regla_activada="ratas_raton_completa",
-            imagen="oidium.jpg"  # Reutilizar o cambiar
+            imagen="uva/oidium.jpeg"  # Reutilizar o cambiar
         ))
 
     # --- GUSANO CORNUDO ---
