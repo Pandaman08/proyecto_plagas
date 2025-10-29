@@ -1,5 +1,5 @@
 streamlit
 experta
 pytest
-plotly>=5.0.0
-frozendict==2.4.2
+plotly
+frozendict
