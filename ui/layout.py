@@ -167,7 +167,6 @@ CULTIVOS = {
         ],
         "descripcion": "Diagnóstico basado en guías técnicas oficiales: PortalFruticola (2023) y Solagro (2024) para el cultivo de palta."
     },
-    "Pitahaya": {"sintomas": ["clorosis", "necrosis", "deformacion_fruto"], "descripcion": "Próximamente disponible."},
     "Café": {"sintomas": ["ojos_de_gallo", "roya", "broca"], "descripcion": "Próximamente disponible."},
     "Cacao": {"sintomas": ["monilia", "escoba_de_bruja", "mal_de_macho"], "descripcion": "Próximamente disponible."},
     "Papa": {"sintomas": ["tizón_tardio", "nematodos", "pulgones"], "descripcion": "Próximamente disponible."},

@@ -35,7 +35,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Consultar con especialista para dosis adecuada según nivel de infestación.",
                 "Monitorear especialmente durante brotamiento, floración y cuajado de frutos."
             ],
-            regla_activada="trips_completo"
+            regla_activada="trips_completo",
+            imagen="palta/trips.jpg"
         ))
 
     @Rule(
@@ -54,7 +55,8 @@ class ReglasPalta(KnowledgeEngine):
                 "El daño por ovoposición forma pequeñas concavidades en los tejidos.",
                 "Verificar presencia de rugosidad y plateado en hojas jóvenes."
             ],
-            regla_activada="trips_parcial"
+            regla_activada="trips_parcial",
+            imagen="palta/trips.jpg"
         ))
 
     # 2. ARAÑITA ROJA / ARAÑITA MARRÓN
@@ -76,7 +78,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Los ácaros se encuentran en la cara SUPERIOR de las hojas (diferente a otras especies).",
                 "Monitorear: 300 ácaros/hoja causa bronceado y defoliación parcial."
             ],
-            regla_activada="aranita_roja_completa"
+            regla_activada="aranita_roja_completa",
+            imagen="palta/arañita.jpg"
         ))
 
     @Rule(
@@ -95,7 +98,8 @@ class ReglasPalta(KnowledgeEngine):
                 "El bronceado de hojas es signo de alta densidad de ácaros.",
                 "Periodos de sequía favorecen la defoliación con menos ácaros (70 hembras/hoja)."
             ],
-            regla_activada="aranita_roja_parcial"
+            regla_activada="aranita_roja_parcial",
+            imagen="palta/arañita.jpg"
         ))
 
     # 3. MOSCA BLANCA DE LOS BROTES
@@ -116,7 +120,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Monitorear formación de fumagina (hongo negro sobre melaza secretada).",
                 "Inspeccionar envés de hojas jóvenes en busca de adultos blancos."
             ],
-            regla_activada="mosca_blanca_completa"
+            regla_activada="mosca_blanca_completa",
+            imagen="palta/moscaBlancaBrotes.jpeg"
         ))
 
     @Rule(
@@ -135,7 +140,8 @@ class ReglasPalta(KnowledgeEngine):
                 "La fumagina (hongo negro) es indicador indirecto de mosca blanca.",
                 "Realizar podas sanitarias preventivas."
             ],
-            regla_activada="mosca_blanca_parcial"
+            regla_activada="mosca_blanca_parcial",
+            imagen="palta/moscaBlancaBrotes.jpeg"
         ))
 
     # 4. QUERESAS FIORINIA
@@ -157,7 +163,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Monitoreo crítico: cuando cubren casi toda la hoja provocan secamiento y defoliación.",
                 "En frutos: afecta calidad cosmética reduciendo valor comercial."
             ],
-            regla_activada="queresas_fiorinia_completa"
+            regla_activada="queresas_fiorinia_completa",
+            imagen="palta/queresasFiorinia.jpeg"
         ))
 
     @Rule(
@@ -177,7 +184,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Inspeccionar hojas y frutos en busca de cobertura de escamas.",
                 "El daño económico es mayor cuando afecta la calidad cosmética del fruto."
             ],
-            regla_activada="queresas_fiorinia_parcial"
+            regla_activada="queresas_fiorinia_parcial",
+            imagen="palta/queresasFiorinia.jpeg"
         ))
 
     # 5. QUERESAS HEMIBERLESIA
@@ -200,7 +208,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Control: tratamientos pre-cosecha con aceites o insecticidas sistémicos.",
                 "Crítico para exportación: requiere certificación fitosanitaria."
             ],
-            regla_activada="queresas_hemiberlesia_completa"
+            regla_activada="queresas_hemiberlesia_completa",
+            imagen="palta/queresa.jpg"
         ))
 
     @Rule(
@@ -220,7 +229,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Difícil remoción durante proceso de post-cosecha.",
                 "Problema crítico para frutos de exportación."
             ],
-            regla_activada="queresas_hemiberlesia_parcial"
+            regla_activada="queresas_hemiberlesia_parcial",
+            imagen="palta/queresa.jpg"
         ))
 
     # 6. MOSCA BLANCA ESPIRAL
@@ -242,7 +252,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Control: detergentes agrícolas, aceites minerales o insecticidas sistémicos.",
                 "Monitorear envés de hojas regularmente."
             ],
-            regla_activada="mosca_blanca_espiral_completa"
+            regla_activada="mosca_blanca_espiral_completa",
+            imagen="palta/moscaBlanca.webp"
         ))
 
     @Rule(
@@ -261,7 +272,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Verificar cobertura de cera blanca sobre las hojas.",
                 "Diferente a otras moscas blancas por patrón espiral de oviposición."
             ],
-            regla_activada="mosca_blanca_espiral_parcial"
+            regla_activada="mosca_blanca_espiral_parcial",
+            imagen="palta/moscaBlanca.webp"
         ))
 
     # 7. BICHO DEL CESTO
@@ -284,7 +296,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Control químico: Bacillus thuringiensis o insecticidas en estadios tempranos.",
                 "Monitorear antes de que las larvas completen el cesto protector."
             ],
-            regla_activada="bicho_cesto_completo"
+            regla_activada="bicho_cesto_completo",
+            imagen="palta/bichoCesto.jpeg"
         ))
 
     @Rule(
@@ -304,7 +317,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Las larvas se protegen dentro del cesto mientras se alimentan.",
                 "Fácil de detectar visualmente por los cestos característicos."
             ],
-            regla_activada="bicho_cesto_parcial"
+            regla_activada="bicho_cesto_parcial",
+            imagen="palta/bichoCesto.jpeg"
         ))
 
     # ENFERMEDADES (3 ENFERMEDADES CON 6 REGLAS)
@@ -329,7 +343,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Mejorar drenaje en suelos arcillosos o pesados.",
                 "La enfermedad prospera cuando el suelo es arcilloso o pesado."
             ],
-            regla_activada="tristeza_completa"
+            regla_activada="tristeza_completa",
+            imagen="palta/tristezaPaltaHass.webp"
         ))
 
     @Rule(
@@ -349,7 +364,8 @@ class ReglasPalta(KnowledgeEngine):
                 "En ataques severos: árbol con fuerte defoliación que lleva a la muerte.",
                 "Realizar análisis de suelo y evaluar condiciones de humedad."
             ],
-            regla_activada="tristeza_parcial"
+            regla_activada="tristeza_parcial",
+            imagen="palta/tristezaPaltaHass.webp"
         ))
 
     # 9. BRAZO NEGRO
@@ -372,7 +388,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Evitar heridas abiertas durante podas e injertos.",
                 "El hongo se disemina por herramientas no desinfectadas."
             ],
-            regla_activada="brazo_negro_completo"
+            regla_activada="brazo_negro_completo",
+            imagen="palta/BrazoNegro.jpg"
         ))
 
     @Rule(
@@ -392,7 +409,8 @@ class ReglasPalta(KnowledgeEngine):
                 "El hongo se disemina por herramientas sin desinfectar.",
                 "Inspeccionar cortes longitudinales de frutos afectados."
             ],
-            regla_activada="brazo_negro_parcial"
+            regla_activada="brazo_negro_parcial",
+            imagen="palta/BrazoNegro.jpg"
         ))
 
     # 10. SUNBLOTCH (MANCHA DE SOL)
@@ -415,7 +433,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Adquirir material vegetal certificado libre de viroides.",
                 "Disminuye rendimientos y produce frutas sin valor comercial."
             ],
-            regla_activada="sunblotch_completo"
+            regla_activada="sunblotch_completo",
+            imagen="palta/manchaDelSol.jpg"
         ))
 
     @Rule(
@@ -437,7 +456,8 @@ class ReglasPalta(KnowledgeEngine):
                 "Los paltos no desarrollan en altura, tienen crecimiento horizontal.",
                 "Consultar con especialista para confirmación del diagnóstico."
             ],
-            regla_activada="sunblotch_parcial"
+            regla_activada="sunblotch_parcial",
+            imagen="palta/manchaDelSol.jpg"
         ))
 
     # SIN DIAGNÓSTICO (REGLA 21)
@@ -460,5 +480,6 @@ class ReglasPalta(KnowledgeEngine):
                 "Considerar análisis de suelo y foliar para detectar deficiencias.",
                 "Revisar la guía fotográfica oficial para comparar síntomas visuales."
             ],
-            regla_activada="sin_diagnostico"
+            regla_activada="sin_diagnostico",
+            imagen=None
         ))

@@ -96,6 +96,14 @@ def mostrar_diagnostico_palta(CULTIVOS):
         </div>
         """, unsafe_allow_html=True)
         
+        # Mostrar imagen si existe
+        if diag.get("imagen"):
+            try:
+                st.image(f"images/{diag['imagen']}", caption=f"Imagen de {diag['plaga']}", use_container_width=True)
+            except Exception:
+                st.warning("Imagen no disponible. Asegúrese de tener la carpeta 'images' con el archivo correspondiente.")
+
+        
         # Gráfico de certeza
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -121,13 +129,6 @@ def mostrar_diagnostico_palta(CULTIVOS):
             margin=dict(l=20, r=20, t=40, b=20)
         )
         st.plotly_chart(fig, use_container_width=True)
-        
-        # Diagnósticos secundarios (si existen)
-        if len(diagnosticos) > 1:
-            with st.expander("📋 Diagnósticos alternativos", expanded=False):
-                for d in diagnosticos[1:]:
-                    if d['certeza'] > 0.5:
-                        st.write(f"- **{d['plaga']}** (certeza: {int(d['certeza']*100)}%)")
         
         # Información adicional según el diagnóstico
         if "Tristeza" in diag['plaga']:
