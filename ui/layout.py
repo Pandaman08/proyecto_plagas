@@ -266,7 +266,8 @@ def mostrar_diagnostico_piña():
         if len(diagnosticos) > 1:
             with st.expander("📋 Diagnósticos alternativos", expanded=False):
                 for d in diagnosticos[1:]:
-                    st.write(f"- **{d['plaga']}** (certeza: {int(d['certeza']*100)}%)")
+                    if d['certeza'] > 0.5:
+                        st.write(f"- **{d['plaga']}** (certeza: {int(d['certeza']*100)}%)")
 
         # Trazabilidad
         with st.expander("🔍 Trazabilidad de la inferencia", expanded=False):
