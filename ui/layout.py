@@ -62,6 +62,7 @@ def inject_custom_css():
 
     /* Tarjetas de diagnóstico */
     .diagnostic-card {
+        color: #000000;
         background: white;
         padding: 20px;
         border-radius: 12px;
@@ -104,13 +105,13 @@ CULTIVOS = {
         ],
         "descripcion": "Diagnóstico basado en la Guía SENASA (2020) para el cultivo de piña."
     },
-    "Palta": {"sintomas": ["manchas_folares", "caida_prematura", "frutos_manchados"], "descripcion": "Próximamente disponible."},
+    "Palta": {"sintomas": ["manchas_folares", "caida_prematura", "frutos_manchados"], "descripcion": "Diagnóstico basado en la Guía PortalFruticola (2023) para el cultivo de palta."},
     "Pitahaya": {"sintomas": ["clorosis", "necrosis", "deformacion_fruto"], "descripcion": "Próximamente disponible."},
     "Café": {"sintomas": ["ojos_de_gallo", "roya", "broca"], "descripcion": "Próximamente disponible."},
     "Cacao": {"sintomas": ["monilia", "escoba_de_bruja", "mal_de_macho"], "descripcion": "Próximamente disponible."},
     "Papa": {"sintomas": ["tizón_tardio", "nematodos", "pulgones"], "descripcion": "Próximamente disponible."},
     "Arroz": {"sintomas": ["hoja_blanca", "piricularia", "gusano_cogollero"], "descripcion": "Próximamente disponible."},
-     "Uva": {
+    "Uva": {
         "sintomas": [
             "verrugas_hojas",
             "nudosidades_raices",
@@ -178,6 +179,8 @@ def mostrar_interfaz():
         mostrar_diagnostico_piña()
     elif cultivo_seleccionado == "Uva":
         mostrar_diagnostico_uva()
+    elif cultivo_seleccionado == "Palta":
+        mostrar_diagnostico_palta()
     else:
         st.info(f"El módulo de diagnóstico para **{cultivo_seleccionado}** estará disponible en una próxima actualización.")
         st.image("https://placehold.co/600x200/e8f5e9/2e7d32?text=Próximamente", use_column_width=True)
@@ -385,3 +388,26 @@ def mostrar_diagnostico_uva():
             st.write("**Reglas activadas:**")
             for r in resultado["reglas_activadas"]:
                 st.code(r, language="python")
+
+# ───────────────────────────────────────────────
+# INTERFAZ ESPECÍFICA PARA PALTA
+# ───────────────────────────────────────────────
+
+def mostrar_diagnostico_palta():
+    sintomas_disponibles = CULTIVOS["Palta"]["sintomas"]
+    
+    with st.expander("🔍 Guía de síntomas observables", expanded=False):
+        st.markdown("""
+        - **marchitez**: pérdida de turgencia en hojas.
+        - **enrojecimiento_foliar**: coloración rojiza en hojas adultas.
+        - **raices_dañadas**: raíces cortadas, mordidas o con tejido necrótico.
+        - **colonias_algodonosas**: masa blanca algodonosa en base de hojas/frutos.
+        - **hormigas**: presencia activa de hormigas en la base de la planta.
+        """)
+
+    seleccion = st.multiselect(
+        "Seleccione los síntomas observados en el campo:",
+        options=sintomas_disponibles,
+        default=[]
+    )
+    print("palta")
