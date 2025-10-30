@@ -15,405 +15,263 @@ from experta import KnowledgeEngine, Rule, TEST, MATCH, NOT
 from .hechos import Caso, Diagnostico
 
 class ReglasPalta(KnowledgeEngine):
-    # --- FILÓXERA ---
+    
+    # PLAGAS
+    
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"verrugas_hojas", "nudosidades_raices"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: {"raspado_frutos", "rugosidad_frutos", "bronceado_frutos"}.issubset(s))
     )
-    def filoxera_completa(self):
+    def trips_completo(self):
         self.declare(Diagnostico(
-            plaga="Filóxera (Phylloxera vitifoliae)",
+            plaga="Trips del Palto (Heliothrips haemorrhoidalis)",
             certeza=1.0,
-            umbral="Presencia en raíces o hojas",
+            umbral="Presencia de trips en floración y cuajado",
             recomendaciones=[
-                "Injertar sobre porta-injertos resistentes: Poulsen, 1102, Riparia.",
-                "Evitar plantas provenientes de zonas infestadas.",
-                "Tratar yemas con insecticidas antes de injertar.",
-                "Aplicar imidacloprid (Confidor) a 100 ml/200L si hay ataque."
+                "Aplicar productos antes del inicio de floración y al inicio del cuajado.",
+                "Principios activos recomendados: Metomil, Clorpirifos o Benfuracard.",
+                "Consultar con especialista para dosis adecuada según nivel de infestación.",
+                "Monitorear especialmente durante brotamiento, floración y cuajado de frutos."
             ],
-            regla_activada="filoxera_completa",
-            imagen="uva/filoxera.jpg"
+            regla_activada="trips_completo"
         ))
 
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "verrugas_hojas" in s or "nudosidades_raices" in s),
-        NOT(Diagnostico(plaga="Filóxera (Phylloxera vitifoliae)"))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: len({"raspado_frutos", "rugosidad_frutos", "bronceado_frutos", "deformacion_frutos"} & s) >= 2),
+        NOT(Diagnostico(plaga="Trips del Palto (Heliothrips haemorrhoidalis)"))
     )
-    def filoxera_parcial(self):
+    def trips_parcial(self):
         self.declare(Diagnostico(
-            plaga="Filóxera (Phylloxera vitifoliae) – sospecha",
+            plaga="Trips del Palto (Heliothrips haemorrhoidalis) — sospecha",
             certeza=0.7,
-            umbral="Presencia parcial de síntomas",
+            umbral="Presencia de trips en floración y cuajado",
             recomendaciones=[
-                "Confirmar mediante inspección de raíces y hojas.",
-                "Revisar origen de plantas e injertos.",
-                "Implementar medidas preventivas inmediatas."
+                "Síntomas incompletos. Inspeccionar frutos recién cuajados en busca de raspado.",
+                "Buscar pequeños insectos alargados en flores y frutos.",
+                "El daño por ovoposición forma pequeñas concavidades en los tejidos.",
+                "Verificar presencia de rugosidad y plateado en hojas jóvenes."
             ],
-            regla_activada="filoxera_parcial",
-            imagen="filoxera.jpg"
+            regla_activada="trips_parcial"
         ))
 
-    # --- ARAÑITA ROJA ---
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"hojas_gris_plomizo", "tejido_araña"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: {"tostado_hojas", "hojas_rojizas", "defoliacion_prematura"}.issubset(s))
     )
     def aranita_roja_completa(self):
         self.declare(Diagnostico(
-            plaga="Arañita roja (Panonychus ulmi / Tetranynchus sp.)",
+            plaga="Arañita roja (Oligonychus yothersi / O. punicae)",
             certeza=1.0,
-            umbral="Alta densidad visible a simple vista",
+            umbral="Presencia de ácaros en casi todas las plantas",
             recomendaciones=[
-                "Mantener riego adecuado y humedad relativa.",
-                "Aplicar azufre espolvoreado (30 kg/ha) o azufre mojable (1 kg/200L).",
-                "Usar Propineb (Fitorraz) si hay daño severo.",
-                "Rotar acaricidas: Dicofol, Abamectina, Azocyclotin."
+                "Realizar lavado a presión con detergente agrícola (150 ml/200 litros) para eliminar ácaros del haz de hojas.",
+                "Control químico con: Spirodiclofen, Cyexatín, Propargite, Abamectina o aceite agrícola vegetal.",
+                "Prevención post-control: azufre micronizado (1.0 kg/200 lt de agua).",
+                "Regar días antes de aplicar insecticidas. Evitar mezclas de agroquímicos.",
+                "Aplicar cuando la planta no esté estresada para mejor efectividad."
             ],
-            regla_activada="aranita_roja_completa",
-            imagen="uva/aranita_roja.webp"
+            regla_activada="aranita_roja_completa"
         ))
 
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "hojas_gris_plomizo" in s),
-        NOT(Diagnostico(plaga="Arañita roja (Panonychus ulmi / Tetranynchus sp.)"))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: "tostado_hojas" in s and ("hojas_rojizas" in s or "perdida_clorofila" in s)),
+        NOT(Diagnostico(plaga="Arañita roja (Oligonychus yothersi / O. punicae)"))
     )
     def aranita_roja_parcial(self):
         self.declare(Diagnostico(
-            plaga="Arañita roja – sospecha",
+            plaga="Arañita roja (Oligonychus yothersi / O. punicae) — sospecha",
             certeza=0.6,
-            umbral="Síntoma inicial",
+            umbral="Presencia de ácaros en casi todas las plantas",
             recomendaciones=[
-                "Inspeccionar cara inferior de hojas con lupa 10X.",
-                "Verificar presencia de ácaros rojos pequeños.",
-                "Iniciar control preventivo con azufre."
+                "Inspeccionar el haz de las hojas con lupa en busca de ácaros pequeños.",
+                "Buscar raspado y puntos rojizos en hojas maduras.",
+                "El color rojizo es la respuesta de la planta al sellar heridas del raspado.",
+                "Monitorear pérdida de actividad fotosintética y rendimiento."
             ],
-            regla_activada="aranita_roja_parcial",
-            imagen="aranita_roja.jpg"
+            regla_activada="aranita_roja_parcial"
         ))
 
-    # --- ACARO HIALINO ---
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"brotacion_lenta", "hojas_abarquilladas"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: {"perforacion_brotes", "fumagina", "debilitamiento_planta"}.issubset(s))
     )
-    def acaro_hialino_completa(self):
+    def mosca_blanca_completa(self):
         self.declare(Diagnostico(
-            plaga="Ácaro hialino (Calipetrimerus vitis / Phyllocoptes vitis)",
+            plaga="Mosca blanca de los brotes (Bemisia sp.)",
             certeza=1.0,
-            umbral="Deformación visible en brotes",
+            umbral="Ataques severos en brotes",
             recomendaciones=[
-                "Quemar restos de poda.",
-                "Aplicar azufre antes de la brotación (1 kg/200L).",
-                "Usar aceite agrícola + Azocyclotin o Abamectina si hay ataque."
+                "Control preventivo: lavar con detergente agrícola (150 ml/200 lt).",
+                "Realizar podas sanitarias para eliminar brotes afectados.",
+                "Ataques severos: aplicar Acetamiprid, Imidacloprid, Clorpirifos o Buprofezin.",
+                "Monitorear formación de fumagina (hongo negro sobre melaza secretada).",
+                "Inspeccionar envés de hojas jóvenes en busca de adultos blancos."
             ],
-            regla_activada="acaro_hialino_completa",
-            imagen="uva/aranita_roja.jpg"  # Reutilizar si no tienes imagen específica
+            regla_activada="mosca_blanca_completa"
         ))
 
-    # --- AVES ---
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"picaduras_racimos", "aves_presentes"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: len({"perforacion_brotes", "fumagina", "debilitamiento_planta", "hojas_pegajosas"} & s) >= 2),
+        NOT(Diagnostico(plaga="Mosca blanca de los brotes (Bemisia sp.)"))
     )
-    def aves_completa(self):
+    def mosca_blanca_parcial(self):
         self.declare(Diagnostico(
-            plaga="Aves (cuculíes, madrugadoras)",
-            certeza=1.0,
-            umbral="Daño estético en racimos",
+            plaga="Mosca blanca de los brotes (Bemisia sp.) — sospecha",
+            certeza=0.65,
+            umbral="Ataques severos en brotes",
             recomendaciones=[
-                "Instalar cintas anti-aves (efectivas en Caravelí).",
-                "Usar protectores de racimos (bolsas de papel).",
-                "Aplicar Oiko Neem (1.2 L/200L) semanas previas a cosecha.",
-                "Ahuyentar con espantapájaros o sonidos."
+                "Buscar insectos blancos pequeños en el envés de hojas jóvenes.",
+                "Verificar presencia de melaza (sustancia pegajosa) en hojas.",
+                "La fumagina (hongo negro) es indicador indirecto de mosca blanca.",
+                "Realizar podas sanitarias preventivas."
             ],
-            regla_activada="aves_completa",
-            imagen="uva/oidium.jpeg"  # Reutilizar o cambiar si tienes imagen de aves
+            regla_activada="mosca_blanca_parcial"
         ))
 
-    # --- AVISPAS Y ABEJAS ---
+    # ENFERMEDADES
+
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"bayas_vacias", "avispa_presencia"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: {"hojas_amarillas", "defoliacion", "raices_necrosadas", "frutos_pequenos"}.issubset(s))
     )
-    def avispas_abejas_completa(self):
+    def tristeza_completa(self):
         self.declare(Diagnostico(
-            plaga="Avispas y abejas (Polistes spp., Apis mellifera)",
+            plaga="Tristeza del palto (Phytophthora cinnamomi)",
             certeza=1.0,
-            umbral="Racimos con bayas solo piel",
+            umbral="Presencia de raicillas podridas o necrosadas",
             recomendaciones=[
-                "Eliminar nidos silvestres cerca del viñedo.",
-                "Usar cebos tóxicos: zumo de fruta + Trichlorfon (4g/L).",
-                "Colocar bolsas de papel en racimos pequeños.",
-                "Aplicar Malathion localizado si es necesario."
+                "Emplear patrones tolerantes: Topa Topa y Duke.",
+                "Aplicar riegos ligeros y frecuentes (evitar encharcamiento).",
+                "Incorporar materia orgánica descompuesta (compost) al suelo.",
+                "Si daño inicial: aplicar fungicida a base de Metalaxyl al cuello en forma de drench.",
+                "Usar fosfonatos sistémicos: Aliete (Fosetil de aluminio) o ácido fosfórico.",
+                "Mejorar drenaje en suelos arcillosos o pesados."
             ],
-            regla_activada="avispas_abejas_completa",
-            imagen="uva/oidium_avispa.jpg"  # Reutilizar o cambiar
+            regla_activada="tristeza_completa"
         ))
 
-    # --- RATAS Y RATONES ---
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"racimos_consumidos", "madrigueras"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: len({"hojas_amarillas", "defoliacion", "raices_necrosadas", "muerte_regresiva"} & s) >= 2),
+        NOT(Diagnostico(plaga="Tristeza del palto (Phytophthora cinnamomi)"))
     )
-    def ratas_raton_completa(self):
+    def tristeza_parcial(self):
         self.declare(Diagnostico(
-            plaga="Ratas y ratones",
-            certeza=1.0,
-            umbral="Daño directo en racimos o tallos",
-            recomendaciones=[
-                "Fomentar enemigos naturales: zorros, aves rapaces, culebras.",
-                "Destruir madrigueras y usar trampas mecánicas.",
-                "Aplicar rodenticidas anticoagulantes (Cumatetralil, Difetialone) en cebos."
-            ],
-            regla_activada="ratas_raton_completa",
-            imagen="uva/oidium.jpeg"  # Reutilizar o cambiar
-        ))
-
-    # --- GUSANO CORNUDO ---
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"hojas_consumidas", "gusano_grande"}.issubset(s))
-    )
-    def gusano_cornudo_completa(self):
-        self.dedeclare(Diagnostico(
-            plaga="Gusano cornudo (Pholus vitis)",
-            certeza=1.0,
-            umbral="Presencia visual de larvas >6 cm",
-            recomendaciones=[
-                "Recolección manual y destrucción.",
-                "Aplicar Bacillus thuringiensis (Dipel) a 250 g/ha.",
-                "Usar Trichlorfon (Dipterex 80) a 1.5 kg/ha si ataque severo."
-            ],
-            regla_activada="gusano_cornudo_completa",
-            imagen="gusano_cornudo.jpg"
-        ))
-
-    # --- NEMATODOS ---
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"plantas_debiles", "nódulos_redondeados_raíz"}.issubset(s))
-    )
-    def nematodos_completa(self):
-        self.declare(Diagnostico(
-            plaga="Nematodos (Meloidogyne spp.)",
-            certeza=1.0,
-            umbral="Nódulos redondeados en raíces",
-            recomendaciones=[
-                "Injertar sobre patrones resistentes: Verlandieri, Riparia.",
-                "Aplicar estiércol para promover hongos antagonistas.",
-                "Favorecer lombrices de tierra (sus excretas son tóxicas para nematodos).",
-                "Último recurso: nematicidas como Aldicarb (Temik) – alto riesgo."
-            ],
-            regla_activada="nematodos_completa",
-            imagen="oidium.jpg"  # Reutilizar o cambiar
-        ))
-
-    # --- OIDIO (OIDIUM) ---
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"polvillo_blanco", "aborto_flores"}.issubset(s))
-    )
-    def oidium_completa(self):
-        self.declare(Diagnostico(
-            plaga="Oidio (Uncinula necator)",
-            certeza=1.0,
-            umbral="Polvillo blanco en hojas y racimos",
-            recomendaciones=[
-                "Mejorar aireación con poda en verde y distanciamiento de plantas.",
-                "Aplicar azufre espolvoreado (30-40 kg/ha) o azufre mojable (1 kg/200L).",
-                "Fungicidas: Tebuconazole (Silvacur), Triadimenol (Bayfidan) a 100 ml/200L.",
-                "Tratamientos en: brotes 10cm, inicio floración, envero."
-            ],
-            regla_activada="oidium_completa",
-            imagen="oidium.jpg"
-        ))
-
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "polvillo_blanco" in s),
-        NOT(Diagnostico(plaga="Oidio (Uncinula necator)"))
-    )
-    def oidium_parcial(self):
-        self.declare(Diagnostico(
-            plaga="Oidio – sospecha",
+            plaga="Tristeza del palto (Phytophthora cinnamomi) — sospecha",
             certeza=0.7,
-            umbral="Primeros signos visibles",
+            umbral="Presencia de raicillas podridas o necrosadas",
             recomendaciones=[
-                "Inspeccionar ambas caras de hojas y racimos.",
-                "Iniciar tratamiento preventivo con azufre.",
-                "Evitar riego excesivo y mantener ventilación."
+                "Inspeccionar raíces en busca de pudrición o necrosis.",
+                "La enfermedad prospera en suelos arcillosos con mal drenaje.",
+                "En ataques leves: algunas ramas defoliadas.",
+                "En ataques severos: árbol con fuerte defoliación que lleva a la muerte.",
+                "Realizar análisis de suelo y evaluar condiciones de humedad."
             ],
-            regla_activada="oidium_parcial",
-            imagen="oidium.jpg"
+            regla_activada="tristeza_parcial"
         ))
 
-    # --- PODREDUMBRE GRIS ---
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"moho_gris", "racimos_podridos"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: {"cancros_tronco", "exudados_blancos", "muerte_ramas"}.issubset(s))
     )
-    def podredumbre_gris_completa(self):
+    def brazo_negro_completo(self):
         self.declare(Diagnostico(
-            plaga="Podredumbre gris (Botrytis cinerea)",
+            plaga="Brazo negro (Lasiodiplodia theobromae)",
             certeza=1.0,
-            umbral="Moho gris en racimos en envero",
+            umbral="Presencia de cancros con exudados blanquecinos",
             recomendaciones=[
-                "Poda en verde para mejorar aireación.",
-                "Evitar riegos pesados; usar riegos ligeros.",
-                "Fungicidas: Benomil (200 g/200L), Tebuconazole (200 ml/200L), Tolyfluanid (500 g/200L).",
-                "Aplicar en: cuajado, grano guisante, inicio envero, 21 días pre-cosecha."
+                "Desinfectar semillas desde el inicio del cultivo.",
+                "Pulverizar preventivamente dos veces al año con Benomil o Thiabendazol.",
+                "Desinfectar herramientas de injerto y poda con lejía entre planta y planta.",
+                "Eliminar ramas afectadas mediante poda sanitaria.",
+                "Aplicar fungicida al observar primera secreción blanquecina en cancros.",
+                "Evitar heridas abiertas durante podas e injertos."
             ],
-            regla_activada="podredumbre_gris_completa",
-            imagen="podredumbre_gris.jpg"
+            regla_activada="brazo_negro_completo"
         ))
 
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "moho_gris" in s),
-        NOT(Diagnostico(plaga="Podredumbre gris (Botrytis cinerea)"))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: len({"cancros_tronco", "exudados_blancos", "muerte_ramas", "pudricion_frutos_pedunculo"} & s) >= 2),
+        NOT(Diagnostico(plaga="Brazo negro (Lasiodiplodia theobromae)"))
     )
-    def podredumbre_gris_parcial(self):
+    def brazo_negro_parcial(self):
         self.declare(Diagnostico(
-            plaga="Podredumbre gris – sospecha",
-            certeza=0.6,
-            umbral="Primeras manchas marrón oscuro",
+            plaga="Brazo negro (Lasiodiplodia theobromae) — sospecha",
+            certeza=0.65,
+            umbral="Presencia de cancros con exudados blanquecinos",
             recomendaciones=[
-                "Inspeccionar racimos en floración y envero.",
-                "Reducir humedad con poda y ventilación.",
-                "Iniciar aplicación preventiva de fungicidas."
+                "Buscar cancros con exudados blanquecinos y grumosos en tronco y ramas.",
+                "Verificar necrosis del follaje y ramillas con muerte total del tejido.",
+                "En frutos: pudrición en zona de inserción del pedúnculo.",
+                "El hongo se disemina por herramientas sin desinfectar.",
+                "Inspeccionar cortes longitudinales de frutos afectados."
             ],
-            regla_activada="podredumbre_gris_parcial",
-            imagen="podredumbre_gris.jpg"
+            regla_activada="brazo_negro_parcial"
         ))
 
-    # --- AGALLA DE LA CORONA ---
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: {"agallas_tallo", "plantas_pequeñas"}.issubset(s))
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: {"manchas_amarillas_fruto", "variegado_hojas", "crecimiento_horizontal"}.issubset(s))
     )
-    def agalla_corona_completa(self):
+    def sunblotch_completo(self):
         self.declare(Diagnostico(
-            plaga="Agalla de la corona (Agrobacterium vitis)",
+            plaga="Sunblotch - Mancha de sol (ASBVD viroide)",
             certeza=1.0,
-            umbral="Tumores en cuello de planta",
+            umbral="Presencia de síntomas en frutos y hojas",
             recomendaciones=[
-                "Usar porta-injertos resistentes: Riparia Gloria, Rupestris du Lot.",
-                "Desinfectar herramientas de poda con lejía (200 ml/L) o formol (50 ml/L).",
-                "Quemar restos de poda y plantas enfermas.",
-                "Extirpar tumores y aplicar cicatrizante vegetal (Skane M8)."
+                "CRÍTICO: Los viroides NO se pueden controlar una vez en la planta.",
+                "Eliminar plantas infectadas desde la raíz y quemar completamente.",
+                "Prevención: desinfectar herramientas de poda y cosecha con agua+jabón o lejía.",
+                "No usar semillas, yemas o plumas de plantas enfermas para propagación.",
+                "Desinfectar tijeras de podar entre planta y planta durante cosecha.",
+                "Adquirir material vegetal certificado libre de viroides."
             ],
-            regla_activada="agalla_corona_completa",
-            imagen="agalla_corona.jpg"
+            regla_activada="sunblotch_completo"
         ))
 
-    # --- REGLAS ADICIONALES (para completar 20) ---
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "clorosis_hojas" in s and "crecimiento_lento" in s)
+        Caso(cultivo="palta", sintomas=MATCH.s),
+        TEST(lambda s: len({"manchas_amarillas_fruto", "variegado_hojas", "moteado_hojas", "corteza_facil_desprender"} & s) >= 2),
+        NOT(Diagnostico(plaga="Sunblotch - Mancha de sol (ASBVD viroide)"))
     )
-    def deficiencia_nutricional(self):
+    def sunblotch_parcial(self):
         self.declare(Diagnostico(
-            plaga="Deficiencia nutricional (potasio/nitrógeno)",
-            certeza=0.8,
-            umbral="Síntomas generales sin plaga específica",
+            plaga="Sunblotch - Mancha de sol (ASBVD viroide) — sospecha",
+            certeza=0.75,
+            umbral="Presencia de síntomas en frutos y hojas",
             recomendaciones=[
-                "Realizar análisis de suelo y hojas.",
-                "Aplicar fertilizantes equilibrados (N-P-K).",
-                "Evitar exceso de nitrógeno que favorece plagas."
+                "Lesión en forma de vagina en frutos con bordes indefinidos.",
+                "Color: amarillo pálido (general), verde claro (Fuerte), rojizo (Hass).",
+                "Moteado rosa o blanco en hojas.",
+                "Líneas longitudinales amarillentas cuando se desprende corteza.",
+                "Síntomas aparecen a partir del 3er año en plantas injertadas.",
+                "Consultar con especialista para confirmación del diagnóstico."
             ],
-            regla_activada="deficiencia_nutricional",
-            imagen="oidium.jpg"
+            regla_activada="sunblotch_parcial"
         ))
 
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "hojas_marchitas" in s and "suelo_seco" in s)
-    )
-    def estrés_hidrico(self):
-        self.declare(Diagnostico(
-            plaga="Estrés hídrico",
-            certeza=0.9,
-            umbral="Marchitez sin plaga visible",
-            recomendaciones=[
-                "Ajustar frecuencia de riego (no superar 30 días entre riegos).",
-                "Usar riego gota a gota si es posible.",
-                "Monitorear humedad del suelo."
-            ],
-            regla_activada="estrés_hidrico",
-            imagen="oidium.jpg"
-        ))
+    # SIN DIAGNÓSTICO
 
     @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "hojas_amarrillentas" in s and "raíces_dañadas" in s)
-    )
-    def problema_raices(self):
-        self.declare(Diagnostico(
-            plaga="Problema radicular (drenaje/pH)",
-            certeza=0.7,
-            umbral="Síntomas sistémicos",
-            recomendaciones=[
-                "Verificar drenaje del suelo y pH (ideal 6.0-7.0).",
-                "Aplicar enmiendas orgánicas.",
-                "Evitar compactación del suelo."
-            ],
-            regla_activada="problema_raices",
-            imagen="oidium.jpg"
-        ))
-
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "flores_no_cuajan" in s and "temperatura_alta" in s)
-    )
-    def estrés_ambiental(self):
-        self.declare(Diagnostico(
-            plaga="Estrés ambiental (alta temperatura)",
-            certeza=0.6,
-            umbral="Fallo en cuajado sin plaga",
-            recomendaciones=[
-                "Proporcionar sombra parcial en horas de calor extremo.",
-                "Mantener humedad del suelo.",
-                "Usar mulching para conservar agua."
-            ],
-            regla_activada="estrés_ambiental",
-            imagen="oidium.jpg"
-        ))
-
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "racimos_desiguales" in s and "poda_inadecuada" in s)
-    )
-    def manejo_cultivo(self):
-        self.declare(Diagnostico(
-            plaga="Manejo cultural inadecuado",
-            certeza=0.8,
-            umbral="Problemas estructurales en planta",
-            recomendaciones=[
-                "Implementar poda de formación y poda en verde.",
-                "Reducir número de plantas por hoyo.",
-                "Capacitarse en técnicas de manejo del viñedo."
-            ],
-            regla_activada="manejo_cultivo",
-            imagen="oidium.jpg"
-        ))
-
-    # --- SIN DIAGNÓSTICO ---
-    @Rule(
-        Caso(cultivo="uva", sintomas=MATCH.s),
+        Caso(cultivo="palta", sintomas=MATCH.s),
         NOT(Diagnostico())
     )
     def sin_diagnostico(self):
         self.declare(Diagnostico(
-            plaga="Sin plaga identificada",
+            plaga="Sin plaga o enfermedad identificada",
             certeza=0.0,
             umbral="N/A",
             recomendaciones=[
-                "No se detectaron síntomas compatibles con plagas principales en uva.",
-                "Verifique condiciones de cultivo: riego, fertilización, poda.",
-                "Consulte a un especialista o envíe muestras a laboratorio."
+                "No se detectaron síntomas compatibles con plagas o enfermedades principales en palta.",
+                "Considerar deficiencias nutricionales (N, P, K, B, Ca, Mg, Zn) según síntomas foliares.",
+                "Verificar estado fenológico: algunas plagas atacan en etapas específicas.",
+                "Evaluar condiciones de drenaje, riego y fertilización.",
+                "Consultar con especialista en cultivo de palto para diagnóstico detallado.",
+                "Considerar análisis de suelo y foliar para detectar deficiencias."
             ],
-            regla_activada="sin_diagnostico",
-            imagen=None
+            regla_activada="sin_diagnostico"
         ))

@@ -105,7 +105,23 @@ CULTIVOS = {
         ],
         "descripcion": "Diagnóstico basado en la Guía SENASA (2020) para el cultivo de piña."
     },
-    "Palta": {"sintomas": ["manchas_folares", "caida_prematura", "frutos_manchados"], "descripcion": "Diagnóstico basado en la Guía PortalFruticola (2023) para el cultivo de palta."},
+    "Palta": {
+        "sintomas": [
+            # PLAGAS - Trips
+            "raspado_frutos", "rugosidad_frutos", "bronceado_frutos", "deformacion_frutos",
+            # PLAGAS - Arañita Roja
+            "tostado_hojas", "hojas_rojizas", "perdida_clorofila", "defoliacion_prematura",
+            # PLAGAS - Mosca Blanca
+            "perforacion_brotes", "fumagina", "debilitamiento_planta", "hojas_pegajosas",
+            # ENFERMEDADES - Tristeza
+            "hojas_amarillas", "defoliacion", "raices_necrosadas", "frutos_pequenos", "muerte_regresiva",
+            # ENFERMEDADES - Brazo Negro
+            "cancros_tronco", "exudados_blancos", "muerte_ramas", "pudricion_frutos_pedunculo",
+            # ENFERMEDADES - Sunblotch
+            "manchas_amarillas_fruto", "variegado_hojas", "moteado_hojas", "crecimiento_horizontal", "corteza_facil_desprender"
+        ],
+        "descripcion": "Diagnóstico basado en la Guía PortalFruticola (2023) para el cultivo de palta."
+    },
     "Pitahaya": {"sintomas": ["clorosis", "necrosis", "deformacion_fruto"], "descripcion": "Próximamente disponible."},
     "Café": {"sintomas": ["ojos_de_gallo", "roya", "broca"], "descripcion": "Próximamente disponible."},
     "Cacao": {"sintomas": ["monilia", "escoba_de_bruja", "mal_de_macho"], "descripcion": "Próximamente disponible."},
