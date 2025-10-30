@@ -1,15 +1,28 @@
+import collections.abc
+
+# Parche para compatibilidad con Python 3.10+
+collections.Mapping = collections.abc.Mapping
+collections.MutableMapping = collections.abc.MutableMapping
+collections.MutableSequence = collections.abc.MutableSequence
+collections.Sequence = collections.abc.Sequence
+collections.Iterable = collections.abc.Iterable
+collections.Iterator = collections.abc.Iterator
+collections.MutableSet = collections.abc.MutableSet
+collections.Callable = collections.abc.Callable
+
 from experta import KnowledgeEngine
 from knowledge.hechos import Caso
 
 from knowledge.reglas_piña import ReglasPiña
 from knowledge.reglas_uva import ReglasUva
 from knowledge.reglas_limon import ReglasLimon
+from knowledge.reglas_paltas import ReglasPalta
 
 MAPA_CULTIVOS = {
     "piña": ReglasPiña,
     "uva": ReglasUva,
     "limon": ReglasLimon,
-    
+    "palta": ReglasPalta
 }
 
 class SistemaExpertoPlagas:
@@ -22,6 +35,7 @@ class SistemaExpertoPlagas:
                 "reglas_activadas": []
             }
 
+        #set: conjunto en pyhton
         clase_reglas = MAPA_CULTIVOS[cultivo_key]
         motor = clase_reglas()
         motor.reset()
