@@ -3,10 +3,13 @@ from knowledge.hechos import Caso
 
 from knowledge.reglas_piña import ReglasPiña
 from knowledge.reglas_uva import ReglasUva
+from knowledge.reglas_limon import ReglasLimon
 
 MAPA_CULTIVOS = {
     "piña": ReglasPiña,
     "uva": ReglasUva,
+    "limon": ReglasLimon,
+    
 }
 
 class SistemaExpertoPlagas:
