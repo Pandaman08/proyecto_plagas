@@ -14,11 +14,23 @@ def mostrar_diagnostico_palta(CULTIVOS):
         - **tostado_hojas**: hojas con apariencia tostada o quemada
         - **hojas_rojizas**: coloración rojiza en hojas maduras
         - **perdida_clorofila**: pérdida del color verde en las hojas
+        - **bronceado_hojas**: bronceado en hojas por alta densidad de ácaros
         - **defoliacion_prematura**: caída temprana de hojas
         - **perforacion_brotes**: perforaciones en hojas jóvenes y brotes
         - **fumagina**: presencia de hongo negro (hollín) en hojas
         - **debilitamiento_planta**: planta con poco vigor y crecimiento lento
         - **hojas_pegajosas**: hojas con sustancia pegajosa (melaza)
+        - **escamas_marron_frutos**: escamas alargadas marrón amarillento en frutos
+        - **escamas_marron_hojas**: escamas alargadas con pliegue central en hojas
+        - **secamiento_hojas**: hojas que se secan progresivamente
+        - **escamas_blancas_pedunculo**: escamas blanco-rosadas en zona del pedúnculo
+        - **escamas_circulares_frutos**: escamas circulares u ovaladas en frutos
+        - **espirales_cera_hojas**: grandes espirales de secreciones céreas en envés
+        - **huevos_desordenados_enves**: huevos alargados dispuestos desordenadamente
+        - **cobertura_cera_hojas**: cobertura blanca de cera muy acentuada
+        - **cestos_colgantes_hojas**: estructuras en forma de cesto colgando de hojas
+        - **raspado_epidermis_hojas**: raspado superficial en epidermis de hojas
+        - **larvas_con_refugio**: larvas protegidas dentro de cestos de follaje
         - **hojas_amarillas**: coloración amarillenta general en follaje
         - **defoliacion**: caída excesiva de hojas
         - **raices_necrosadas**: raíces podridas o con tejido muerto
@@ -32,8 +44,8 @@ def mostrar_diagnostico_palta(CULTIVOS):
         - **variegado_hojas**: hojas con manchas de diferentes colores
         - **moteado_hojas**: puntos blancos o rosados en hojas
         - **crecimiento_horizontal**: árbol crece más horizontal que vertical
-        - **corteza_facil_desprender**: corteza se desprende fácilmente con líneas amarillentas
-        """)
+        - **corteza_facil_desprender**: corteza se desprende fácilmente con líneas amarillentas               
+                """)
 
     seleccion = st.multiselect(
         "Seleccione los síntomas observados en el campo:",
@@ -124,6 +136,12 @@ def mostrar_diagnostico_palta(CULTIVOS):
             st.warning("⚠️ **Prevención crítica**: Desinfecte TODAS las herramientas de poda e injerto con lejía entre planta y planta para evitar propagación.")
         elif "Sunblotch" in diag['plaga']:
             st.error("🚨 **ALERTA**: Los viroides NO tienen cura. Las plantas infectadas deben ser eliminadas completamente y quemadas para evitar contagio.")
+        elif "Queresas" in diag['plaga']:
+            st.info("💡 **Importante para exportación**: Las queresas afectan la calidad cosmética del fruto y son frecuentemente interceptadas en cuarentena. Requiere tratamientos pre-cosecha y certificación fitosanitaria.")
+        elif "Arañita" in diag['plaga']:
+            st.info("💡 **Dato importante**: Esta especie de ácaro se encuentra en la cara SUPERIOR de las hojas (diferente a otros ácaros). Densidades de 300 ácaros/hoja o 70 hembras/hoja en sequía causan daño económico.")
+        elif "Bicho del cesto" in diag['plaga']:
+            st.success("✅ **Control facilitado**: Los cestos son muy visibles y pueden recolectarse manualmente. El control es más efectivo en estadios tempranos antes de que completen el cesto protector.")
         
         # Trazabilidad
         with st.expander("🔍 Trazabilidad de la inferencia", expanded=False):
