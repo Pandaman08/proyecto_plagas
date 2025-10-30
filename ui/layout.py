@@ -147,6 +147,10 @@ CULTIVOS = {
         ],
         "descripcion": "Diagnóstico basado en el Manual Regional Sur - Control de Plagas y Enfermedades en el Cultivo de la Vid (desco, 2004)."
     },
+    #tatito uwu
+    "Limon": {
+        "sintomas": ["hoja_blanca", "piricularia", "gusano_cogollero"], 
+        "descripcion": "Próximamente disponible."},
 }
 
 # ───────────────────────────────────────────────
