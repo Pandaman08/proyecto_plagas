@@ -15,10 +15,12 @@ from knowledge.hechos import Caso
 
 from knowledge.reglas_piña import ReglasPiña
 from knowledge.reglas_uva import ReglasUva
+from knowledge.reglas_paltas import ReglasPalta
 
 MAPA_CULTIVOS = {
     "piña": ReglasPiña,
     "uva": ReglasUva,
+    "palta": ReglasPalta
 }
 
 class SistemaExpertoPlagas:
@@ -31,6 +33,7 @@ class SistemaExpertoPlagas:
                 "reglas_activadas": []
             }
 
+        #set: conjunto en pyhton
         clase_reglas = MAPA_CULTIVOS[cultivo_key]
         motor = clase_reglas()
         motor.reset()
