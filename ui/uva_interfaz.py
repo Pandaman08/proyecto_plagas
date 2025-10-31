@@ -38,32 +38,26 @@ SINTOMAS_LEGIBLES = {
     "poda_inadecuada": "Se podó mal o no se podó"
 }
 
-# Explicaciones de reglas en lenguaje común
 EXPLICACION_REGLAS = {
     "filoxera_completa": {
         "titulo": "¿Por qué identificamos Filóxera?",
         "explicacion": "Detectamos esta plaga porque encontraste **dos señales clave**: verrugas en las hojas y pelotitas en las raíces. Cuando aparecen juntas, es casi seguro que se trata de filóxera.",
-        "referencia": "Manual Uva - Página 10: 'En las hojas: presencia de verrugas en la cara superior. En las raíces: nudosidades en los extremos.'"
     },
     "filoxera_parcial": {
         "titulo": "¿Por qué sospechamos de Filóxera?",
         "explicacion": "Vimos **solo una de las dos señales** típicas de filóxera (verrugas en hojas O pelotitas en raíces). Por eso lo marcamos como sospecha. Te recomendamos revisar bien las raíces.",
-        "referencia": "Manual Uva - Página 10: Control preventivo ante síntomas parciales."
     },
     "aranita_roja_completa": {
         "titulo": "¿Por qué identificamos Arañita Roja?",
         "explicacion": "Las **hojas grises** junto con **telarañas** son el síntoma clásico de arañita roja. Estos bichitos se alimentan de las hojas y les quitan el color.",
-        "referencia": "Manual Uva - Página 11-12: 'Las hojas toman coloración gris plomiza y se observan tejidos tipo tela de araña.'"
     },
     "aranita_roja_parcial": {
         "titulo": "¿Por qué sospechamos de Arañita Roja?",
         "explicacion": "Las hojas grises pueden ser arañita roja, pero necesitamos confirmar. Voltea las hojas y busca con cuidado unos bichitos rojos muy pequeños.",
-        "referencia": "Manual Uva - Página 12: 'Inspeccionar cara inferior de hojas con lupa.'"
     },
     "acaro_hialino_completa": {
         "titulo": "¿Por qué identificamos Ácaro Hialino?",
         "explicacion": "Cuando la planta **tarda en brotar** y las **hojas se enrollan**, es señal de ácaro hialino. Estos ácaros atacan los brotes nuevos.",
-        "referencia": "Manual Uva - Página 13: 'Brotación inicial muy lenta, hojas abarquilladas con abultamientos.'"
     },
     "acaro_hialino_parcial": {
         "titulo": "¿Por qué sospechamos de Ácaro Hialino?",
@@ -73,121 +67,97 @@ EXPLICACION_REGLAS = {
     "aves_completa": {
         "titulo": "¿Por qué identificamos daño por Aves?",
         "explicacion": "Si ves **picaduras en las uvas** y hay **pájaros rondando**, está claro que son ellos los culpables. Las aves picotean las uvas maduras.",
-        "referencia": "Manual Uva - Página 14: 'Se observa presencia de picaduras en las bayas de los racimos.'"
     },
     "picaduras_generales": {
         "titulo": "¿Por qué hay daño en racimos sin identificar la causa?",
         "explicacion": "Detectamos **picaduras en las uvas** pero no viste pájaros ni avispas. Podría ser cualquiera de los dos. Observa el campo en diferentes horas.",
-        "referencia": "Manual Uva - Diagnóstico diferencial de daños en racimos."
     },
     "avispas_abejas_completa": {
         "titulo": "¿Por qué identificamos Avispas y Abejas?",
         "explicacion": "Las **uvas vacías** (solo cáscara) con **avispas volando** es típico. Las avispas entran y se comen todo el jugo de la uva.",
-        "referencia": "Manual Uva - Página 15: 'En los racimos de vid bayas solo con la piel.'"
     },
     "bayas_vacias_parcial": {
         "titulo": "¿Por qué sospechamos de Avispas?",
         "explicacion": "Las **uvas vacías** son típicas de avispas, pero no confirmaste su presencia. Revisa los racimos en las mañanas cuando están más activas.",
-        "referencia": "Manual Uva - Página 15: 'Búsqueda de nidos cercanos.'"
     },
     "ratas_raton_completa": {
         "titulo": "¿Por qué identificamos Ratas y Ratones?",
         "explicacion": "Los **racimos comidos** junto con **hoyos en el suelo** delatan a las ratas. Ellas comen los racimos completos y hacen madrigueras.",
-        "referencia": "Manual Uva - Página 16: 'Daños en racimos consumidos directamente. Se aprecian madrigueras.'"
     },
     "ratas_raton_parcial": {
         "titulo": "¿Por qué sospechamos de Roedores?",
         "explicacion": "Encontraste **racimos comidos O madrigueras** (pero no ambos). Es probable que haya ratas, pero necesitamos más evidencia como heces o rastros.",
-        "referencia": "Manual Uva - Página 16: 'Evidencia indirecta de roedores.'"
     },
     "gusano_cornudo_completa": {
         "titulo": "¿Por qué identificamos Gusano Cornudo?",
         "explicacion": "Si hay **hojas comidas** y ves un **gusano grande con cuerno**, es el gusano cornudo de la vid. Es grande y fácil de ver.",
-        "referencia": "Manual Uva - Página 17: 'Gusanos de gran tamaño, entre 6 a 8 cm con una prominencia que parece un cuerno.'"
     },
     "hojas_consumidas_parcial": {
         "titulo": "¿Por qué hay daño en hojas sin identificar el insecto?",
         "explicacion": "Las **hojas comidas** indican un insecto defoliador, pero sin ver el gusano grande no podemos confirmar que sea gusano cornudo. Busca larvas grandes.",
-        "referencia": "Manual Uva - Diagnóstico de insectos defoliadores."
     },
     "nematodos_completa": {
         "titulo": "¿Por qué identificamos Nematodos?",
-        "explicacion": "Las **plantas débiles** con **bultos redondos en las raíces** indican nematodos. Son como anguilitas que atacan las raíces.",
-        "referencia": "Manual Uva - Página 18-19: 'En las raíces se observan nódulos redondeados.'"
+        "explicacion": "Las **plantas débiles** con **bultos redondos en las raíces** indican nematodos. Son como anguilitas que atacan las raíces."
     },
     "nematodos_parcial": {
         "titulo": "¿Por qué sospechamos de Nematodos?",
-        "explicacion": "Detectamos **bultos en las raíces** que son típicos de nematodos, aunque la planta no se ve débil aún. Es importante actuar antes que empeore.",
-        "referencia": "Manual Uva - Página 18-19: 'Detección temprana de nematodos.'"
+        "explicacion": "Detectamos **bultos en las raíces** que son típicos de nematodos, aunque la planta no se ve débil aún. Es importante actuar antes que empeore."
     },
     "oidium_completa": {
         "titulo": "¿Por qué identificamos Oidio?",
         "explicacion": "El **polvo blanco** en las hojas junto con **flores que se caen** es oidio (caracha). Es una de las enfermedades más comunes en uva.",
-        "referencia": "Manual Uva - Página 20: 'Presencia de polvillo blanco ceniciento. Causa aborto de flores.'"
     },
     "oidium_parcial": {
         "titulo": "¿Por qué sospechamos de Oidio?",
         "explicacion": "El polvo blanco solo puede ser oidio, pero como no viste otros síntomas, lo marcamos como sospecha. Revisa bien los racimos.",
-        "referencia": "Manual Uva - Página 20: 'Inspeccionar ambas caras de hojas y racimos.'"
     },
     "podredumbre_gris_completa": {
         "titulo": "¿Por qué identificamos Podredumbre Gris?",
         "explicacion": "La **pelusa gris** en **racimos podridos** es podredumbre gris (botrytis). Aparece sobre todo cuando hay mucha humedad.",
-        "referencia": "Manual Uva - Página 21: 'Los frutos presentan un moho grisáceo y aspecto podrido.'"
     },
     "podredumbre_gris_parcial": {
         "titulo": "¿Por qué sospechamos de Podredumbre Gris?",
-        "explicacion": "La pelusa gris es el primer síntoma. Si no ves racimos podridos aún, estás a tiempo de controlarlo.",
-        "referencia": "Manual Uva - Página 21-22: 'Primeras manchas marrón oscuro.'"
+        "explicacion": "La pelusa gris es el primer síntoma. Si no ves racimos podridos aún, estás a tiempo de controlarlo."
     },
     "racimos_podridos_general": {
         "titulo": "¿Por qué hay pudrición sin identificar la causa?",
         "explicacion": "Los **racimos podridos** sin pelusa gris visible pueden ser por exceso de humedad, daño por insectos o mala ventilación. No es necesariamente botrytis.",
-        "referencia": "Manual Uva - Diagnóstico diferencial de pudriciones."
     },
     "agalla_corona_completa": {
         "titulo": "¿Por qué identificamos Agalla de la Corona?",
-        "explicacion": "Los **bultos en el tronco** junto con **plantas chicas** indican agalla de la corona. Es una bacteria que forma tumores.",
-        "referencia": "Manual Uva - Página 22-23: 'En el cuello de la planta se observan agallas o tumores.'"
+        "explicacion": "Los **bultos en el tronco** junto con **plantas chicas** indican agalla de la corona. Es una bacteria que forma tumores."
     },
     "agalla_corona_parcial": {
         "titulo": "¿Por qué sospechamos de Agalla de la Corona?",
-        "explicacion": "Vimos **bultos en el tronco** pero la planta no está pequeña todavía. Puede ser agalla en etapa inicial. Importante desinfectar herramientas.",
-        "referencia": "Manual Uva - Página 22-23: 'Detección temprana de tumores.'"
+        "explicacion": "Vimos **bultos en el tronco** pero la planta no está pequeña todavía. Puede ser agalla en etapa inicial. Importante desinfectar herramientas."
     },
     "deficiencia_nutricional": {
         "titulo": "¿Por qué pensamos en Deficiencia Nutricional?",
         "explicacion": "Las **hojas amarillas** con **crecimiento lento** sin otros síntomas sugieren que le faltan nutrientes a la planta (nitrógeno o potasio).",
-        "referencia": "Basado en prácticas agronómicas estándar de fertilización."
     },
     "estrés_hidrico": {
         "titulo": "¿Por qué pensamos en Falta de Agua?",
         "explicacion": "Las **hojas caídas** con **tierra seca** es señal clara: tu planta tiene sed. Necesita más riego.",
-        "referencia": "Manual Uva - Página 8: 'Problemas en manejo de riego que supera los 30 días.'"
     },
     "problema_raices": {
         "titulo": "¿Por qué pensamos en Problemas de Raíces?",
         "explicacion": "Las **hojas amarillentas** con **raíces dañadas** indican problemas en el suelo: puede ser mal drenaje o pH inadecuado.",
-        "referencia": "Basado en diagnóstico de problemas culturales de manejo."
     },
     "estrés_ambiental": {
         "titulo": "¿Por qué pensamos en Estrés por Calor?",
         "explicacion": "Cuando **no salen uvas después de la flor** y ha hecho **mucho calor**, el problema es el clima. El calor extremo afecta la formación de frutos.",
-        "referencia": "Manual Uva - Página 8: Problemas asociados a condiciones ambientales."
     },
     "manejo_cultivo": {
         "titulo": "¿Por qué pensamos en Mal Manejo del Cultivo?",
-        "explicacion": "Los **racimos desparejos** con **mala poda** indican errores de manejo. No es una plaga, sino cómo se está cuidando la planta.",
-        "referencia": "Manual Uva - Página 8: 'Poda de formación y poda en verde son prácticas básicas.'"
+        "explicacion": "Los **racimos desparejos** con **mala poda** indican errores de manejo. No es una plaga, sino cómo se está cuidando la planta."
     },
     "sin_diagnostico": {
         "titulo": "¿Por qué no encontramos una plaga específica?",
         "explicacion": "Los síntomas que marcaste no coinciden con ninguna plaga o enfermedad conocida de la uva. Puede ser un problema diferente.",
-        "referencia": "Se recomienda consulta con especialista."
     }
 }
 
-# Información adicional sobre combinaciones de síntomas
 COMBINACIONES_SINTOMAS = {
     "picaduras_sin_agente": ["picaduras_racimos"],
     "bayas_vacias_sin_avispa": ["bayas_vacias"],
