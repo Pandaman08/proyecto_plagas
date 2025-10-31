@@ -295,7 +295,7 @@ def mostrar_diagnostico_uva(CULTIVOS):
                 for s in sintomas_texto:
                     st.markdown(f"- ✓ {s}")
                 
-                st.info(f"📖 **Referencia técnica:**")
+                st.info("📖 **Referencia técnica:**")
                 
                 # Sugerencias adicionales basadas en la regla
                 if "parcial" in regla_usada or "sospecha" in diag['plaga'].lower():
