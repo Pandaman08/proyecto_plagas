@@ -62,7 +62,6 @@ EXPLICACION_REGLAS = {
     "acaro_hialino_parcial": {
         "titulo": "¿Por qué sospechamos de Ácaro Hialino?",
         "explicacion": "Vimos hojas enrolladas pero no confirmamos brotación lenta. Puede ser ácaro hialino en etapa temprana. Observa los brotes en los próximos días.",
-        "referencia": "Manual Uva - Página 13: 'Síntomas tempranos en follaje.'"
     },
     "aves_completa": {
         "titulo": "¿Por qué identificamos daño por Aves?",
@@ -273,7 +272,7 @@ def mostrar_diagnostico_uva(CULTIVOS):
 
         if diag.get("imagen"):
             try:
-                st.image(f"images/{diag['imagen']}", caption=f"{diag['plaga']}", use_column_width=True)
+                st.image(f"images/{diag['imagen']}", caption=f"{diag['plaga']}", use_container_width=True)
             except Exception:
                 pass
 
@@ -296,7 +295,7 @@ def mostrar_diagnostico_uva(CULTIVOS):
                 for s in sintomas_texto:
                     st.markdown(f"- ✓ {s}")
                 
-                st.info(f"📖 **Referencia técnica:** {info_regla['referencia']}")
+                st.info(f"📖 **Referencia técnica:**")
                 
                 # Sugerencias adicionales basadas en la regla
                 if "parcial" in regla_usada or "sospecha" in diag['plaga'].lower():
