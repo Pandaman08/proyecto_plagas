@@ -13,7 +13,7 @@ def mostrar_diagnostico_cacao(CULTIVOS):
     
     with st.expander("🔍 Guía de síntomas observables", expanded=False):
         st.markdown("""
-        ### Plagas y Enfermedades del Cacao (Theobroma cacao)
+        ### Plagas del Cacao (Theobroma cacao)
         
         **Moniliasis (Moniliophthora roreri)**
         - **manchas_oscuras_mazorca**: Pequeñas manchas oscuras en superficie de mazorca
@@ -46,11 +46,10 @@ def mostrar_diagnostico_cacao(CULTIVOS):
     seleccion = st.multiselect(
         "Seleccione los síntomas observados en el campo:",
         options=sintomas_disponibles,
-        default=[],
-        help="Seleccione todos los síntomas visibles para un diagnóstico más preciso"
+        default=[]
     )
 
-    if st.button("🔍 Diagnosticar Plaga", type="primary"):
+    if st.button("🔍 Diagnosticar Plaga"):
         if not seleccion:
             st.warning("⚠️ Por favor, seleccione al menos un síntoma.")
             return
@@ -69,76 +68,71 @@ def mostrar_diagnostico_cacao(CULTIVOS):
 
         diag = diagnosticos[0]
         
-        if diag['certeza'] == 0.0:
-            st.error("❌ **Sin plaga identificada**: Los síntomas no coinciden con las plagas principales del cacao.")
-            st.info("📋 **Recomendación**: Consulte con un técnico agrícola para análisis adicional.")
-        else:
-            # Alerta para enfermedades devastadoras
-            if "Moniliasis" in diag['plaga'] or "Escoba de bruja" in diag['plaga']:
-                st.error(f"""
-                🚨 **ALERTA**: {diag['plaga'].split('(')[0]} es una enfermedad devastadora.
-                Puede causar pérdidas del 40-90% de la producción. 
-                **Acción inmediata requerida.**
-                """)
-            
-            # Color según certeza
-            if diag['certeza'] >= 0.95:
-                color_borde = "#d32f2f"
-            elif diag['certeza'] >= 0.8:
-                color_borde = "#ff9800"
-            else:
-                color_borde = "#4caf50"
-            
-            st.markdown(f"""
-            <div class="diagnostic-card" style="border-left: 4px solid {color_borde}">
-                <h3>✅ Diagnóstico: {diag['plaga']}</h3>
-                <p><strong>Certeza:</strong> {int(diag['certeza'] * 100)}%</p>
-                <p><strong>Umbral de daño económico:</strong> {diag['umbral']}</p>
-            </div>
-            """, unsafe_allow_html=True)
+        color_borde = "#d32f2f" if diag['certeza'] >= 0.9 else "#4caf50"
+        
+        st.markdown(f"""
+        <div class="diagnostic-card" style="border-left: 4px solid {color_borde}">
+            <h3>✅ Diagnóstico: {diag['plaga']}</h3>
+            <p><strong>Certeza:</strong> {int(diag['certeza'] * 100)}%</p>
+            <p><strong>Umbral de daño económico:</strong> {diag['umbral']}</p>
+            <p><strong>Recomendaciones:</strong></p>
+            <ul>
+                {''.join(f'<li>{r}</li>' for r in diag['recomendaciones'])}
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
-            # Gráfico de certeza
-            fig = go.Figure(go.Indicator(
-                mode="gauge+number",
-                value=diag['certeza'] * 100,
-                title={'text': "Nivel de Confianza"},
-                gauge={
-                    'axis': {'range': [0, 100]},
-                    'bar': {'color': color_borde},
-                    'steps': [
-                        {'range': [0, 50], 'color': "#ffcdd2"},
-                        {'range': [50, 80], 'color': "#fff9c4"},
-                        {'range': [80, 100], 'color': "#c8e6c9"}
-                    ]
-                }
-            ))
-            st.plotly_chart(fig, use_container_width=True)
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=diag['certeza'] * 100,
+            title={'text': "Nivel de Confianza"},
+            gauge={
+                'axis': {'range': [0, 100]},
+                'bar': {'color': "#4caf50"},
+                'steps': [
+                    {'range': [0, 50], 'color': "#ffcdd2"},
+                    {'range': [50, 80], 'color': "#a5d6a7"},
+                    {'range': [80, 100], 'color': "#4caf50"}
+                ]
+            }
+        ))
+        st.plotly_chart(fig, use_container_width=True)
 
-            # Recomendaciones
-            st.subheader("🌾 Recomendaciones de Manejo Integrado")
-            for i, rec in enumerate(diag['recomendaciones'], 1):
-                st.markdown(f"**{i}.** {rec}")
+        if "Moniliasis" in diag['plaga'] or "Escoba de bruja" in diag['plaga']:
+            st.error(f"""
+            ⚠️ **ALERTA**: {diag['plaga'].split('(')[0]} es una enfermedad devastadora.
+            Puede causar pérdidas del 40-90% de la producción. 
+            **Acción inmediata requerida.**
+            """)
 
-        # Explicabilidad
-        with st.expander("🧠 Explicación del Razonamiento (Trazabilidad)", expanded=True):
-            st.markdown("### 📋 Cómo el sistema llegó a esta conclusión")
+        if len(diagnosticos) > 1:
+            with st.expander("📋 Diagnósticos alternativos", expanded=False):
+                for d in diagnosticos[1:]:
+                    if d['certeza'] > 0.5:
+                        st.write(f"- **{d['plaga']}** (certeza: {int(d['certeza']*100)}%)")
+
+        with st.expander("🔍 Trazabilidad de la inferencia", expanded=False):
+            st.write("**Reglas activadas:**")
+            for r in resultado["reglas_activadas"]:
+                st.code(r, language="python")
+        
+        with st.expander("📚 Fuentes consultadas", expanded=False):
+            st.markdown("""
+            **Fuentes técnicas utilizadas:**
+            - INIAP Ecuador (Instituto Nacional de Investigaciones Agropecuarias)
+            - AGROSAVIA Colombia (Corporación Colombiana de Investigación Agropecuaria)
+            - SENASA Perú (Servicio Nacional de Sanidad Agraria)
+            - CATIE (Centro Agronómico Tropical de Investigación y Enseñanza)
+            - CropLife Latin America - Ficha técnica Moniliasis
             
-            col1, col2 = st.columns(2)
+            **Referencias clave:**
+            - "Estado de la moniliasis del cacao causada por Moniliophthora roreri en Colombia" (Acta Agronómica, 2014)
+            - "Manejo integrado de problemas fitosanitarios del cacao en Amazonía Ecuatoriana" (INIAP, 2011)
+            - "Guía del manejo integrado de enfermedades del cultivo de cacao" (INIAP, 2020)
+            - Phillips-Mora et al. (2007) - Diversidad genética de M. roreri
             
-            with col1:
-                st.markdown("**Síntomas ingresados:**")
-                for sintoma in seleccion:
-                    st.markdown(f"- `{sintoma}`")
-            
-            with col2:
-                st.markdown("**Reglas activadas:**")
-                if resultado["reglas_activadas"]:
-                    for regla in resultado["reglas_activadas"]:
-                        if regla:
-                            st.code(regla, language="python")
-                
+            **Datos importantes:**
             - Colombia: origen probable de Moniliasis (mayor diversidad genética)
             - Pérdidas anuales en Santander (Colombia): 40% = 33 millones USD
             - Amazonia ecuatoriana: >40% pérdidas por Moniliasis
-
             """)
