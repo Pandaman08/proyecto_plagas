@@ -50,7 +50,7 @@ def inject_custom_css():
     /* Botones - usa primaryColor */
     .stButton>button {
         background-color: var(--primaryColor);
-        color: white;
+        color: #2e7d32;
         border: none;
         border-radius: 8px;
         padding: 10px 20px;
