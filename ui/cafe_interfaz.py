@@ -1,6 +1,21 @@
 import streamlit as st
 import plotly.graph_objects as go
 from engine import SistemaExpertoPlagas
+import os
+
+# Mapeo de plagas a nombres de archivos de imágenes
+IMAGENES_PLAGAS = {
+    "Broca del café (Hypothenemus hampei)": "broca.jpg",
+    "Broca del café (Hypothenemus hampei) – sospecha": "broca.jpg",
+    "Roya amarilla del café (Hemileia vastatrix)": "roya.jpg",
+    "Roya amarilla del café (Hemileia vastatrix) – etapa inicial": "roya.jpg",
+    "Cochinillas de raíces del café (Puto barberi, Dysmicoccus spp)": "cochinilla.jpg",
+    "Cochinillas de raíces – indicio por hormigas": "cochinilla.jpg",
+    "Minador de hojas del café (Leucoptera coffeella)": "minador.jpg",
+    "Arañita roja del café (Oligonychus yothersi)": "arañita.jpg",
+    "Arañita roja del café (Oligonychus yothersi) – focos iniciales": "arañita.jpg",
+    "Mancha de hierro (Cercospora coffeicola)": "mancha.jpg"
+}
 
 def mostrar_diagnostico_cafe(CULTIVOS):
     sintomas_disponibles = CULTIVOS["Café"]["sintomas"]
@@ -11,51 +26,73 @@ def mostrar_diagnostico_cafe(CULTIVOS):
     **La decisión final debe ser tomada por un ingeniero agrónomo, fitopatólogo o técnico agrícola calificado.**
     """)
     
-    with st.expander("🔍 Guía de síntomas observables", expanded=False):
+    with st.expander("📖 Guía rápida de síntomas observables (Campo)", expanded=False):
         st.markdown("""
-        ### Plagas del Café (Coffea arabica)
-        
-        **Broca del café (Hypothenemus hampei)**
-        - **frutos_perforados**: Perforación circular en disco del fruto (parte central)
-        - **granos_dañados**: Granos con galerías internas, polvo café
-        - **cerezas_caidas**: Caída prematura de frutos verdes/maduros
-        
-        **Roya amarilla (Hemileia vastatrix)**
-        - **manchas_amarillas_envés**: Manchas cloróticas en envés de hojas
-        - **caida_hojas**: Defoliación progresiva del cafetal
-        - **polvo_naranja**: Polvillo amarillo-naranja (uredosporas) en envés
-        
-        **Cochinillas de raíces (Puto barberi, Dysmicoccus)**
-        - **amarillamiento_hojas**: Clorosis general de follaje
-        - **marchitez_plantas**: Pérdida de turgencia, plantas débiles
-        - **muerte_plantas**: Muerte de plantas jóvenes y en producción
-        - **hormigas_cuello_tallo**: Presencia de hormigas en base del tallo
-        
-        **Minador de hojas (Leucoptera coffeella)**
-        - **minas_serpentinas_hojas**: Galerías sinuosas entre epidermis
-        - **defoliacion**: Caída de hojas minadas
-        - **hojas_necroticas**: Hojas con tejido muerto por minas
-        
-        **Arañita roja (Oligonychus yothersi)**
-        - **hojas_bronceadas**: Coloración bronceada/amarillenta en hojas
-        - **telaraña_envés**: Finas telas de araña en envés
-        - **epoca_seca**: Síntomas evidentes en periodo seco
-        
-        **Mancha de hierro (Cercospora coffeicola)**
-        - **manchas_necroticas_hojas**: Manchas necróticas circulares
-        - **plantulas_debiles**: Plantas debilitadas en vivero/crecimiento
+        **Frutos perforados**
+        - Perforación circular en el disco del fruto (parte central del grano)
+
+        **Granos dañados internamente**
+        - Polvo café fino en el interior del grano
+
+        **Manchas amarillas en hojas**
+        - Manchas cloróticas visibles en el envés
+
+        **Polvo naranja**
+        - Polvo fino de color naranja o amarillo en la cara inferior de la hoja
+
+        **Hojas con galerías internas**
+        - Líneas serpenteadas dentro del tejido foliar
+
+        **Hojas bronceadas**
+        - Coloración bronceada o amarillenta en periodos secos
+
+        **Manchas necróticas circulares**
+        - Lesiones marrones con borde marcado
+
+        **Plantas débiles o marchitas**
+        - Pérdida de vigor, crecimiento lento
+
+        **Presencia de hormigas en el cuello del tallo**
+        - Indica posible asociación con cochinillas
         """)
 
-    seleccion = st.multiselect(
-        "Seleccione los síntomas observados en el campo:",
-        options=sintomas_disponibles,
-        default=[],
-        help="Seleccione todos los síntomas visibles para un diagnóstico más preciso"
-    )
+    st.markdown("### Seleccione los síntomas observados en sus plantas")
+    st.markdown("---")
 
-    if st.button("🔍 Diagnosticar Plaga", type="primary"):
+    SINTOMAS_DESCRIPCION = {
+        "frutos_perforados": "Frutos perforados",
+        "granos_dañados": "Daño interno en el grano",
+        "cerezas_caidas": "Caída prematura de frutos",
+        "manchas_amarillas_envés": "Manchas amarillas en hojas",
+        "caida_hojas": "Caída progresiva de hojas",
+        "polvo_naranja": "Polvo anaranjado en el envés",
+        "amarillamiento_hojas": "Hojas amarillentas generales",
+        "marchitez_plantas": "Marchitez persistente",
+        "muerte_plantas": "Plantas muy debilitadas",
+        "hormigas_cuello_tallo": "Hormigas en el cuello de la planta",
+        "minas_serpentinas_hojas": "Trayectorias blanquecinas en hojas",
+        "defoliacion": "Pérdida de hojas",
+        "hojas_necroticas": "Hojas con partes secas",
+        "hojas_bronceadas": "Hojas bronceadas o rojizas",
+        "telaraña_envés": "Telarañas finas en el envés",
+        "epoca_seca": "Síntomas en época seca",
+        "manchas_necroticas_hojas": "Manchas circulares necrosadas",
+        "plantulas_debiles": "Plántulas débiles en vivero"
+    }
+
+    seleccion = []
+
+    columnas = st.columns(3)
+    i = 0
+    for sintoma in SINTOMAS_DESCRIPCION:
+        if sintoma in sintomas_disponibles:
+            if columnas[i % 3].checkbox(SINTOMAS_DESCRIPCION[sintoma], key=sintoma):
+                seleccion.append(sintoma)
+            i += 1
+
+    if st.button("Diagnosticar"):
         if not seleccion:
-            st.warning("⚠️ Por favor, seleccione al menos un síntoma.")
+            st.warning("Seleccione al menos un síntoma.")
             return
 
         motor = SistemaExpertoPlagas()
@@ -65,44 +102,56 @@ def mostrar_diagnostico_cafe(CULTIVOS):
             st.error(resultado["error"])
             return
 
-        diagnosticos = resultado["diagnosticos"]
-        if not diagnosticos:
-            st.warning("❌ No se encontró un diagnóstico compatible con los síntomas ingresados.")
+        # Verificar que hay diagnósticos
+        if not resultado.get("diagnosticos") or len(resultado["diagnosticos"]) == 0:
+            st.error("❌ **Sin diagnóstico identificado**: Los síntomas no coinciden con las plagas principales del café.")
+            st.info("📋 **Recomendación**: Consulte con un técnico agrícola para análisis adicional.")
             return
 
-        # DIAGNÓSTICO PRINCIPAL
+        diagnosticos = resultado["diagnosticos"]
         diag = diagnosticos[0]
         
         # Alerta si no hay diagnóstico
         if diag['certeza'] == 0.0:
             st.error("❌ **Sin diagnóstico identificado**: Los síntomas no coinciden con las plagas principales del café.")
             st.info("📋 **Recomendación**: Consulte con un técnico agrícola para análisis adicional.")
+            return
+        
+        # Color según certeza
+        if diag['certeza'] >= 0.9:
+            color_alerta = "success"
+            icono = "✅"
+        elif diag['certeza'] >= 0.7:
+            color_alerta = "info"
+            icono = "⚠️"
         else:
-            # Color según certeza
-            if diag['certeza'] >= 0.9:
-                color_alerta = "success"
-                icono = "✅"
-            elif diag['certeza'] >= 0.7:
-                color_alerta = "info"
-                icono = "⚠️"
-            else:
-                color_alerta = "warning"
-                icono = "🔍"
-            
-            # Tarjeta de diagnóstico
-            st.markdown(f"""
-            <div class="diagnostic-card">
-                <h3>{icono} Diagnóstico: {diag['plaga']}</h3>
-                <p><strong>Nivel de Certeza:</strong> {int(diag['certeza'] * 100)}%</p>
-                <p><strong>Umbral de daño económico:</strong> {diag['umbral']}</p>
-            </div>
-            """, unsafe_allow_html=True)
+            color_alerta = "warning"
+            icono = "🔍"
+        
+        # Tarjeta de diagnóstico
+        st.markdown(f"""
+        <div class="diagnostic-card">
+            <h3>{icono} Diagnóstico: {diag['plaga']}</h3>
+            <p><strong>Nivel de Certeza:</strong> {int(diag['certeza'] * 100)}%</p>
+            <p><strong>Umbral de daño económico:</strong> {diag['umbral']}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
+        # Layout con columnas para gráfico y recomendaciones
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            # RECOMENDACIONES DE MANEJO
+            st.subheader("🌾 Recomendaciones de Manejo Integrado")
+            for i, rec in enumerate(diag['recomendaciones'], 1):
+                st.markdown(f"**{i}.** {rec}")
+
+        with col2:
             # GRÁFICO DE CERTEZA
             fig = go.Figure(go.Indicator(
                 mode="gauge+number",
                 value=diag['certeza'] * 100,
-                title={'text': "Nivel de Confianza del Diagnóstico"},
+                title={'text': "Confianza"},
                 gauge={
                     'axis': {'range': [0, 100]},
                     'bar': {'color': "#4caf50" if diag['certeza'] >= 0.8 else "#ff9800"},
@@ -118,12 +167,23 @@ def mostrar_diagnostico_cafe(CULTIVOS):
                     }
                 }
             ))
+            fig.update_layout(height=250, margin=dict(l=20, r=20, t=50, b=20))
             st.plotly_chart(fig, use_container_width=True)
 
-            # RECOMENDACIONES DE MANEJO
-            st.subheader("🌾 Recomendaciones de Manejo Integrado")
-            for i, rec in enumerate(diag['recomendaciones'], 1):
-                st.markdown(f"**{i}.** {rec}")
+        # MOSTRAR IMAGEN DE LA PLAGA
+        plaga_nombre = diag['plaga']
+        
+        if plaga_nombre in IMAGENES_PLAGAS:
+            nombre_imagen = IMAGENES_PLAGAS[plaga_nombre]
+            ruta_imagen = f"images/cafe/{nombre_imagen}"
+            
+            if os.path.exists(ruta_imagen):
+                try:
+                    st.image(ruta_imagen, caption=f"{plaga_nombre}", use_container_width=True)
+                except Exception as e:
+                    st.warning(f"⚠️ No se pudo cargar la imagen: {str(e)}")
+            else:
+                st.warning(f"⚠️ Imagen no encontrada: {ruta_imagen}")
 
         # EXPLICABILIDAD - REQUISITO ACADÉMICO CRÍTICO
         with st.expander("🧠 Explicación del Razonamiento (Trazabilidad)", expanded=True):
@@ -138,7 +198,7 @@ def mostrar_diagnostico_cafe(CULTIVOS):
             
             with col2:
                 st.markdown("**Reglas activadas:**")
-                if resultado["reglas_activadas"]:
+                if resultado.get("reglas_activadas"):
                     for regla in resultado["reglas_activadas"]:
                         if regla:  # Filtrar None
                             st.code(regla, language="python")
@@ -148,10 +208,11 @@ def mostrar_diagnostico_cafe(CULTIVOS):
             # Explicación del proceso
             st.markdown("---")
             st.markdown("**Proceso de inferencia:**")
+            reglas_activas = len([r for r in resultado.get("reglas_activadas", []) if r])
             st.info(f"""
             1. **Entrada**: Se declararon {len(seleccion)} síntomas como hechos
             2. **Motor de inferencia**: Encadenamiento hacia adelante (forward chaining)
-            3. **Evaluación**: Se activaron {len([r for r in resultado["reglas_activadas"] if r])} regla(s)
+            3. **Evaluación**: Se activaron {reglas_activas} regla(s)
             4. **Resultado**: Diagnóstico con certeza del {int(diag['certeza']*100)}%
             5. **Base de conocimiento**: CENICAFE, SENASA, INIA (2020-2023)
             """)
@@ -162,9 +223,10 @@ def mostrar_diagnostico_cafe(CULTIVOS):
                 st.caption("Otras posibles plagas según los síntomas observados")
                 for d in diagnosticos[1:]:
                     if d['certeza'] > 0.0:
+                        regla_txt = d.get('regla_activada', 'N/A')
                         st.markdown(f"""
                         - **{d['plaga']}**  
-                          Certeza: {int(d['certeza']*100)}% | Regla: `{d.get('regla_activada', 'N/A')}`
+                          Certeza: {int(d['certeza']*100)}% | Regla: `{regla_txt}`
                         """)
 
         # LIMITACIONES DEL SISTEMA
@@ -215,6 +277,7 @@ def mostrar_diagnostico_cafe(CULTIVOS):
         literatura técnica oficial. La certeza refleja la completitud de síntomas observados, no probabilidades 
         estadísticas. Siempre consulte con un profesional antes de aplicar tratamientos químicos.
         """)
+
 
 if __name__ == "__main__":
     from ui.layout import CULTIVOS
