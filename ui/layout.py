@@ -2,6 +2,7 @@ import streamlit as st
 from ui.palta_interfaz import mostrar_diagnostico_palta
 from ui.piña_interfaz import mostrar_diagnostico_piña
 from ui.uva_interfaz import mostrar_diagnostico_uva
+from ui.limon_interfaz import mostrar_diagnostico_limon
 # ───────────────────────────────────────────────
 # ESTILOS CSS PERSONALIZADOS
 # ───────────────────────────────────────────────
@@ -26,10 +27,10 @@ def inject_custom_css():
         margin-bottom: 25px;
     }
 
-    /* Sidebar */
+    /* Sidebar - usa variable de Streamlit */
     [data-testid="stSidebar"] {
-        color: #000000;
-        background-color: #f1f8e9;
+        color: var(--textColor);
+        background-color: var(--secondaryBackgroundColor);
         padding: 15px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -40,13 +41,13 @@ def inject_custom_css():
         text-transform: uppercase;
     }
     [data-testid="stSidebar"] .stSelectbox label {
-        color: #000000;
+        color: var(--textColor);
         font-weight: 600;
     }
 
-    /* Botones */
+    /* Botones - usa primaryColor */
     .stButton>button {
-        background-color: #4caf50;
+        background-color: var(--primaryColor);
         color: white;
         border: none;
         border-radius: 8px;
@@ -56,19 +57,19 @@ def inject_custom_css():
         transition: background-color 0.2s;
     }
     .stButton>button:hover {
-        background-color: #388e3c;
+        background-color: #388e3c; /* Puedes ajustar este hover si quieres mantenerlo fijo */
         color: white;
     }
 
     /* Tarjetas de diagnóstico */
     .diagnostic-card {
-        color: #000000;
-        background: white;
+        color: var(--textColor);
+        background: var(--backgroundColor);
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         margin-top: 20px;
-        border-left: 4px solid #4caf50;
+        border-left: 4px solid var(--primaryColor);
     }
 
     /* Footer */
@@ -86,13 +87,64 @@ def inject_custom_css():
         font-weight: 600;
         color: #2e7d32;
     }
+
+    /* Modo oscuro: ajusta colores específicos si es necesario */
+    @media (prefers-color-scheme: dark) {
+        .main-header {
+            color: #bbdefb;
+        }
+        .main-subheader {
+            color: #81c784;
+        }
+        .footer {
+            color: #aaa;
+            border-top: 1px solid #444;
+        }
+    }
     </style>
     """, unsafe_allow_html=True)
-
 # ───────────────────────────────────────────────
 # CONFIGURACIÓN DE CULTIVOS Y SÍNTOMAS
 # ───────────────────────────────────────────────
 CULTIVOS = {
+    #tatito uwu
+    "Limon": {
+        "sintomas": [
+            # Daños en hojas
+            "hojas_enrolladas",
+            "hojas_plateadas",
+            "hojas_amarillentas",
+            "hojas_deformadas",
+            "hojas_con_minas_serpentinas",
+            "hojas_con_puntos_amarillos",
+            "hojas_con_manchas_negras",
+        
+            # Presencia de insectos/ácaros
+            "escamas_blancas_hojas",
+            "escamas_marrones_hojas",
+            "insectos_algodonosos",
+            "moscas_blancas_envés",
+            "pulgones_brotes",
+        
+            # Secreciones
+            "mielada",
+            "fumagina",
+            
+            # Daños en frutos
+            "frutos_decolorados",
+            "frutos_con_manchas_oscuras",
+            "frutos_plateados",
+            "frutos_deformados",
+            "frutos_pequeños",
+            "cáscara_agrietada",
+            
+            # Daños en ramas/tronco
+            "escamas_tronco",
+            "debilitamiento_planta",
+            "muerte_brotes"
+        ],
+        "descripcion": "Carrillo, P. S. C. (2020). Insectos y ácaros plagas de cítricos con énfasis en el cultivo de limón sutil. Editorial Académica Española."
+    },
     "Piña": {
         "sintomas": [
             "marchitez",
@@ -105,8 +157,68 @@ CULTIVOS = {
         ],
         "descripcion": "Diagnóstico basado en la Guía SENASA (2020) para el cultivo de piña."
     },
-    "Palta": {"sintomas": ["manchas_folares", "caida_prematura", "frutos_manchados"], "descripcion": "Diagnóstico basado en la Guía PortalFruticola (2023) para el cultivo de palta."},
-    "Pitahaya": {"sintomas": ["clorosis", "necrosis", "deformacion_fruto"], "descripcion": "Próximamente disponible."},
+    "Palta": {
+        "sintomas": [            
+            # 1. Trips del Palto (4 síntomas)
+            "raspado_frutos",
+            "rugosidad_frutos",
+            "bronceado_frutos",
+            "deformacion_frutos",
+            
+            # 2. Arañita Roja/Marrón (5 síntomas)
+            "tostado_hojas",
+            "hojas_rojizas",
+            "perdida_clorofila",
+            "bronceado_hojas",
+            "defoliacion_prematura",
+            
+            # 3. Mosca Blanca de los Brotes (4 síntomas)
+            "perforacion_brotes",
+            "fumagina",
+            "debilitamiento_planta",
+            "hojas_pegajosas",
+            
+            # 4. Queresas Fiorinia (3 síntomas)
+            "escamas_marron_frutos",
+            "escamas_marron_hojas",
+            "secamiento_hojas",
+            
+            # 5. Queresas Hemiberlesia (2 síntomas)
+            "escamas_blancas_pedunculo",
+            "escamas_circulares_frutos",
+            
+            # 6. Mosca Blanca Espiral (3 síntomas)
+            "espirales_cera_hojas",
+            "huevos_desordenados_enves",
+            "cobertura_cera_hojas",
+            
+            # 7. Bicho del Cesto (3 síntomas)
+            "cestos_colgantes_hojas",
+            "raspado_epidermis_hojas",
+            "larvas_con_refugio",
+            
+            # 8. Tristeza del Palto (5 síntomas)
+            "hojas_amarillas",
+            "defoliacion",
+            "raices_necrosadas",
+            "frutos_pequenos",
+            "muerte_regresiva",
+            
+            # 9. Brazo Negro (4 síntomas)
+            "cancros_tronco",
+            "exudados_blancos",
+            "muerte_ramas",
+            "pudricion_frutos_pedunculo",
+            
+            # 10. Sunblotch (5 síntomas)
+            "manchas_amarillas_fruto",
+            "variegado_hojas",
+            "moteado_hojas",
+            "crecimiento_horizontal",
+            "corteza_facil_desprender"
+        ],
+        "descripcion": "Diagnóstico basado en guías técnicas oficiales: PortalFruticola (2023) y Solagro (2024) para el cultivo de palta."
+    },
     "Café": {"sintomas": ["ojos_de_gallo", "roya", "broca"], "descripcion": "Próximamente disponible."},
     "Cacao": {"sintomas": ["monilia", "escoba_de_bruja", "mal_de_macho"], "descripcion": "Próximamente disponible."},
     "Papa": {"sintomas": ["tizón_tardio", "nematodos", "pulgones"], "descripcion": "Próximamente disponible."},
@@ -148,6 +260,7 @@ CULTIVOS = {
         ],
         "descripcion": "Diagnóstico basado en el Manual Regional Sur - Control de Plagas y Enfermedades en el Cultivo de la Vid (desco, 2004)."
     },
+    
 }
 
 # ───────────────────────────────────────────────
@@ -179,6 +292,8 @@ def mostrar_interfaz():
         mostrar_diagnostico_piña(CULTIVOS)
     elif cultivo_seleccionado == "Uva":
         mostrar_diagnostico_uva(CULTIVOS)
+    elif cultivo_seleccionado == "Limon":
+        mostrar_diagnostico_limon(CULTIVOS)
     elif cultivo_seleccionado == "Palta":
         mostrar_diagnostico_palta(CULTIVOS)
     else:
@@ -191,4 +306,5 @@ def mostrar_interfaz():
         Desarrollado con fines académicos • Universidad Nacional de Trujillo
     </div>
     """, unsafe_allow_html=True)
+
 
