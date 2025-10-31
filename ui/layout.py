@@ -3,6 +3,7 @@ from ui.palta_interfaz import mostrar_diagnostico_palta
 from ui.piña_interfaz import mostrar_diagnostico_piña
 from ui.uva_interfaz import mostrar_diagnostico_uva
 from ui.limon_interfaz import mostrar_diagnostico_limon
+from ui.papa_interfaz import mostrar_diagnostico_papa
 # ───────────────────────────────────────────────
 # ESTILOS CSS PERSONALIZADOS
 # ───────────────────────────────────────────────
@@ -221,7 +222,92 @@ CULTIVOS = {
     },
     "Café": {"sintomas": ["ojos_de_gallo", "roya", "broca"], "descripcion": "Próximamente disponible."},
     "Cacao": {"sintomas": ["monilia", "escoba_de_bruja", "mal_de_macho"], "descripcion": "Próximamente disponible."},
-    "Papa": {"sintomas": ["tizón_tardio", "nematodos", "pulgones"], "descripcion": "Próximamente disponible."},
+    "Papa": {
+    "sintomas": [
+        # 1. Pulgón de la papa
+        "hojas_enrolladas",
+        "hojas_amarillentas",
+
+        # 2. Polilla de la papa
+        "tuneles_en_hojas",
+        "larvas_presentes",
+
+        # 3. Gusano alambre
+        "raices_perforadas",
+        "tuberculos_huecos",
+
+        # 4. Nematodo dorado
+        "plantas_debilitadas",
+        "manchas_amarillas",
+
+        # 5. Mosca minadora
+        "hojas_con_galerias",
+        "insectos_pequenos_negros",
+
+        # 6. Gorgojo andino
+        "tallos_perforados",
+        "tuberculos_danados",
+
+        # 7. Trips
+        "hojas_plateadas",
+        "insectos_pequenos",
+
+        # 8. Ácaros
+        "hojas_arrugadas",
+        "polvo_fino_blanco",
+
+        # 9. Escarabajo de la papa
+        "hojas_devoradas",
+        "insectos_amarillos_negros",
+
+        # 10. Gusano cortador
+        "tallos_cortados",
+        "plantas_caidas",
+
+        # 11. Mosca blanca
+        "hojas_amarillas",
+        "insectos_mosca_blanca",
+
+        # 12. Minador del tubérculo
+        "tuberculos_con_galerias",
+        "larvas_internas",
+
+        # 13. Gusano blanco
+        "suelo_humedo",
+        "raices_mascadas",
+
+        # 14. Nematodo del tallo
+        "tallos_deformados",
+        "hojas_abolladas",
+
+        # 15. Gusano rosado
+        "tuberculos_decolorados",
+        "larvas_rosadas",
+
+        # 16. Grillo topo
+        "suelo_agrietado",
+        "raices_mordidas",
+
+        # 17. Gusano gris
+        "tallos_mordidos",
+        "ataque_nocturno",
+
+        # 18. Pulgón verde
+        "hojas_curvadas",
+        "insectos_verdes",
+
+        # 19. Caracoles o babosas
+        "hojas_mordidas",
+        "rastro_baboso",
+
+        # 20. Tizón tardío
+        "hojas_manchas_negras",
+        "clima_humedo"
+    ],
+    "descripcion": "Basado en el Manual de Plagas y Enfermedades del Cultivo de Papa - SENASA (2023)."
+},
+
+
     "Arroz": {"sintomas": ["hoja_blanca", "piricularia", "gusano_cogollero"], "descripcion": "Próximamente disponible."},
     "Uva": {
         "sintomas": [
@@ -296,6 +382,9 @@ def mostrar_interfaz():
         mostrar_diagnostico_limon(CULTIVOS)
     elif cultivo_seleccionado == "Palta":
         mostrar_diagnostico_palta(CULTIVOS)
+    elif cultivo_seleccionado == "Papa":
+        mostrar_diagnostico_papa(CULTIVOS)
+
     else:
         st.info(f"El módulo de diagnóstico para **{cultivo_seleccionado}** estará disponible en una próxima actualización.")
         st.image("https://placehold.co/600x200/e8f5e9/2e7d32?text=Próximamente", use_column_width=True)

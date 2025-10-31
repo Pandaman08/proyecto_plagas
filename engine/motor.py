@@ -17,12 +17,14 @@ from knowledge.reglas_piña import ReglasPiña
 from knowledge.reglas_uva import ReglasUva
 from knowledge.reglas_limon import ReglasLimon
 from knowledge.reglas_paltas import ReglasPalta
+from knowledge.reglas_papa import ReglasPapa
 
 MAPA_CULTIVOS = {
     "piña": ReglasPiña,
     "uva": ReglasUva,
     "limon": ReglasLimon,
-    "palta": ReglasPalta
+    "palta": ReglasPalta,
+    "papa": ReglasPapa,
 }
 
 class SistemaExpertoPlagas:
