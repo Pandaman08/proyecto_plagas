@@ -18,13 +18,15 @@ from knowledge.reglas_limon import ReglasLimon
 from knowledge.reglas_paltas import ReglasPalta
 from knowledge.reglas_cafe import ReglasCafe
 from knowledge.reglas_cacao import ReglasCacao
+from knowledge.reglas_papa import ReglasPapa
 
 MAPA_CULTIVOS = {
     "uva": ReglasUva,
     "limon": ReglasLimon,
     "palta": ReglasPalta,
     "café": ReglasCafe,
-    "cacao": ReglasCacao
+    "cacao": ReglasCacao,
+    "papa": ReglasPapa
 }
 
 class SistemaExpertoPlagas:
