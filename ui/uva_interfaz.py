@@ -294,10 +294,8 @@ def mostrar_diagnostico_uva(CULTIVOS):
                 sintomas_texto = [SINTOMAS_LEGIBLES.get(s, s) for s in sintomas_seleccionados]
                 for s in sintomas_texto:
                     st.markdown(f"- ✓ {s}")
-                
-                st.info("📖 **Referencia técnica:**")
-                
-                # Sugerencias adicionales basadas en la regla
+
+                    # Sugerencias adicionales basadas en la regla
                 if "parcial" in regla_usada or "sospecha" in diag['plaga'].lower():
                     st.warning("⚠️ **Este es un diagnóstico preliminar.** Te sugerimos observar más síntomas o consultar a un especialista para confirmar.")
                     
