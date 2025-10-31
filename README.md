@@ -33,8 +33,6 @@ El sistema razona con **encadenamiento hacia adelante** y explica las reglas act
     cd proyecto_plagas
 ```
 ### 2. Crear un entorno virtual (recomendado)
-- ⚠️ Importante: Usa Python 3.10, 3.11 o 3.12.
-- No uses Python 3.14 (incompatible con experta y frozendict).
 - En Windows (PowerShell): 
 ```bash 
     python -m venv plagas
