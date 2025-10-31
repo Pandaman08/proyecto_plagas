@@ -46,7 +46,7 @@ class ReglasCacao(KnowledgeEngine):
         ))
 
     @Rule(
-        Caso(cultivo="café", sintomas=MATCH.s),
+        Caso(cultivo="cacao", sintomas=MATCH.s),
         TEST(lambda s: len({"manchas_oscuras_mazorca", "polvo_blanco", "pudricion_fruto"} & s) >= 2),
         NOT(Diagnostico(plaga="Moniliasis del cacao (Moniliophthora roreri)"))
     )
@@ -240,4 +240,5 @@ class ReglasCacao(KnowledgeEngine):
                 "Enviar muestra a laboratorio especializado para análisis."
             ],
             regla_activada="sin_diagnostico"
+
         ))
