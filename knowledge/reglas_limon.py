@@ -1,11 +1,25 @@
+import collections.abc
+
+# Parche para compatibilidad con Python 3.10+
+collections.Mapping = collections.abc.Mapping
+collections.MutableMapping = collections.abc.MutableMapping
+collections.MutableSequence = collections.abc.MutableSequence
+collections.Sequence = collections.abc.Sequence
+collections.Iterable = collections.abc.Iterable
+collections.Iterator = collections.abc.Iterator
+collections.MutableSet = collections.abc.MutableSet
+collections.Callable = collections.abc.Callable
+
+
 from experta import KnowledgeEngine, Rule, TEST, MATCH, NOT
 from .hechos import Caso, Diagnostico
 
 class ReglasLimon(KnowledgeEngine):
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 1: Minador de hojas de los cítricos
-    # ═══════════════════════════════════════════════════════════════
+    # PLAGAS DEL LIMÓN (10 PLAGAS CON 20 REGLAS)
+
+    # 1. MINADOR DE HOJAS DE LOS CÍTRICOS
+
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
         TEST(lambda s: {"hojas_con_minas_serpentinas", "hojas_enrolladas", "hojas_plateadas"}.issubset(s))
@@ -16,20 +30,41 @@ class ReglasLimon(KnowledgeEngine):
             certeza=1.0,
             umbral="Más del 25% de brotes infestados",
             recomendaciones=[
-                "Inspeccionar brotes tiernos en busca de minas serpenteantes.",
-                "Aplicar aceite agrícola al 0.5-1% durante brotación.",
+                "Inspeccionar brotes tiernos en busca de minas serpenteantes características.",
+                "Aplicar aceite agrícola al 0.5-1% durante brotación para sofocar larvas.",
                 "Liberar parasitoides: Ageniaspis citricola o Citrostichus phyllocnistoides.",
-                "Usar insecticidas: abamectina (300-500 ml/ha) o imidacloprid (0.03-0.05%)."
+                "Control químico: abamectina (300-500 ml/ha) o imidacloprid (0.03-0.05%).",
+                "Las galerías serpentinas son dejadas por larvas que se alimentan entre epidermis."
             ],
-            regla_activada="minador_hojas_completo"
+            regla_activada="minador_hojas_completo",
+            imagen="limon/minador.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 2: Pulgón negro de los cítricos
-    # ═══════════════════════════════════════════════════════════════
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"pulgones_brotes", "hojas_enrolladas", "mielada", "fumagina"}.issubset(s))
+        TEST(lambda s: len({"hojas_con_minas_serpentinas", "hojas_enrolladas", "hojas_plateadas", "hojas_deformadas"} & s) >= 2),
+        NOT(Diagnostico(plaga="Minador de hojas de los cítricos (Phyllocnistis citrella)"))
+    )
+    def minador_hojas_parcial(self):
+        self.declare(Diagnostico(
+            plaga="Minador de hojas de los cítricos (Phyllocnistis citrella) — sospecha",
+            certeza=0.7,
+            umbral="Más del 25% de brotes infestados",
+            recomendaciones=[
+                "Buscar galerías serpenteantes en hojas jóvenes y brotes tiernos.",
+                "Las minas son túneles plateados que serpentean por la lámina foliar.",
+                "Ataca principalmente en periodos de brotación intensa.",
+                "Verificar presencia de pequeñas pupas en bordes de hojas enrolladas."
+            ],
+            regla_activada="minador_hojas_parcial",
+            imagen="limon/minador.jpg"
+        ))
+
+    # 2. PULGÓN NEGRO DE LOS CÍTRICOS
+
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: {"pulgones_brotes", "hojas_enrolladas", "mielada"}.issubset(s))
     )
     def pulgon_negro_completo(self):
         self.declare(Diagnostico(
@@ -40,14 +75,35 @@ class ReglasLimon(KnowledgeEngine):
                 "Revisar envés de hojas tiernas y brotes en floración.",
                 "Aplicar jabón potásico al 1% o aceite mineral al 0.5%.",
                 "Liberar depredadores: Cycloneda sanguinea, Paraneda pallidula.",
-                "Usar imidacloprid (0.05%) o thiamethoxam (50-75 g/200L) si es necesario."
+                "Control químico: imidacloprid (0.05%) o thiamethoxam (50-75 g/200L).",
+                "La mielada favorece aparición de fumagina (hongo negro)."
             ],
-            regla_activada="pulgon_negro_completo"
+            regla_activada="pulgon_negro_completo",
+            imagen="limon/pulgon_negro.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 3: Ácaro del tostado
-    # ═══════════════════════════════════════════════════════════════
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: len({"pulgones_brotes", "hojas_enrolladas", "mielada", "fumagina"} & s) >= 2),
+        NOT(Diagnostico(plaga="Pulgón negro de los cítricos (Toxoptera aurantii)"))
+    )
+    def pulgon_negro_parcial(self):
+        self.declare(Diagnostico(
+            plaga="Pulgón negro de los cítricos (Toxoptera aurantii) — sospecha",
+            certeza=0.7,
+            umbral="5% de brotes con colonias",
+            recomendaciones=[
+                "Buscar colonias de pulgones negros en brotes tiernos y envés de hojas.",
+                "Pueden transmitir el virus de la tristeza de los cítricos.",
+                "Los pulgones secretan mielada que atrae hormigas y favorece fumagina.",
+                "Monitorear especialmente durante brotación y floración."
+            ],
+            regla_activada="pulgon_negro_parcial",
+            imagen="limon/pulgon_negro.jpg"
+        ))
+
+    # 3. ÁCARO DEL TOSTADO
+
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
         TEST(lambda s: {"frutos_plateados", "cáscara_agrietada", "frutos_pequeños"}.issubset(s))
@@ -58,17 +114,38 @@ class ReglasLimon(KnowledgeEngine):
             certeza=1.0,
             umbral="3-5 ácaros por cm² de fruto",
             recomendaciones=[
-                "Inspeccionar frutos jóvenes cerca del pedúnculo.",
+                "Inspeccionar frutos jóvenes cerca del pedúnculo con lupa (10x).",
                 "Aplicar azufre mojable o aceite agrícola al 0.5-1%.",
-                "Usar acaricidas: abamectina (50-100 ml/200L) o fenpyroximate (200 ml/200L).",
-                "Fomentar presencia del hongo Hirsutella thompsonii."
+                "Control químico: abamectina (50-100 ml/200L) o fenpyroximate (200 ml/200L).",
+                "Fomentar presencia del hongo Hirsutella thompsonii.",
+                "El daño en cáscara reduce calidad comercial pero no afecta pulpa."
             ],
-            regla_activada="acaro_tostado_completo"
+            regla_activada="acaro_tostado_completo",
+            imagen="limon/acaro_tostado.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 4: Arañita roja de los cítricos
-    # ═══════════════════════════════════════════════════════════════
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: len({"frutos_plateados", "cáscara_agrietada", "frutos_pequeños", "frutos_decolorados"} & s) >= 2),
+        NOT(Diagnostico(plaga="Ácaro del tostado (Phyllocoptruta oleivora)"))
+    )
+    def acaro_tostado_parcial(self):
+        self.declare(Diagnostico(
+            plaga="Ácaro del tostado (Phyllocoptruta oleivora) — sospecha",
+            certeza=0.7,
+            umbral="3-5 ácaros por cm² de fruto",
+            recomendaciones=[
+                "Buscar ácaros microscópicos de color amarillo pálido en frutos.",
+                "El daño aparece como plateado o bronceado en cáscara.",
+                "Ataques severos causan agrietamiento y caída prematura de frutos.",
+                "Realizar monitoreo desde cuajado hasta 8-10 semanas después."
+            ],
+            regla_activada="acaro_tostado_parcial",
+            imagen="limon/acaro_tostado.jpg"
+        ))
+
+    # 4. ARAÑITA ROJA DE LOS CÍTRICOS
+
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
         TEST(lambda s: {"hojas_con_puntos_amarillos", "hojas_plateadas", "debilitamiento_planta"}.issubset(s))
@@ -79,17 +156,38 @@ class ReglasLimon(KnowledgeEngine):
             certeza=1.0,
             umbral="5-8 ácaros móviles por hoja",
             recomendaciones=[
-                "Revisar haz de hojas con lupa (10x) en busca de ácaros rojos.",
+                "Revisar HAZ de hojas con lupa (10x) en busca de ácaros rojos.",
                 "Aplicar azufre mojable o aceite mineral al 1%.",
                 "Liberar ácaros depredadores: Amblyseius chungas, Phytoseiulus persimilis.",
-                "Usar acaricidas: spirodiclofen (0.04%) o spiromesifen (0.5-0.6 L/ha)."
+                "Control químico: spirodiclofen (0.04%) o spiromesifen (0.5-0.6 L/ha).",
+                "Las poblaciones aumentan en épocas secas y calurosas."
             ],
-            regla_activada="aranita_roja_completo"
+            regla_activada="aranita_roja_completo",
+            imagen="limon/aranita_roja.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 5: Queresa coma (escama púrpura)
-    # ═══════════════════════════════════════════════════════════════
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: len({"hojas_con_puntos_amarillos", "hojas_plateadas", "debilitamiento_planta", "hojas_amarillentas"} & s) >= 2),
+        NOT(Diagnostico(plaga="Arañita roja de los cítricos (Panonychus citri)"))
+    )
+    def aranita_roja_parcial(self):
+        self.declare(Diagnostico(
+            plaga="Arañita roja de los cítricos (Panonychus citri) — sospecha",
+            certeza=0.65,
+            umbral="5-8 ácaros móviles por hoja",
+            recomendaciones=[
+                "Buscar ácaros rojos pequeños en el HAZ (cara superior) de hojas.",
+                "Los ácaros succionan savia causando punteado amarillo.",
+                "Ataques severos causan defoliación y debilitamiento del árbol.",
+                "Verificar presencia de telarañas finas en hojas afectadas."
+            ],
+            regla_activada="aranita_roja_parcial",
+            imagen="limon/aranita_roja.jpg"
+        ))
+
+    # 5. QUERESA COMA (ESCAMA PÚRPURA)
+
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
         TEST(lambda s: {"escamas_marrones_hojas", "hojas_amarillentas", "muerte_brotes"}.issubset(s))
@@ -103,14 +201,35 @@ class ReglasLimon(KnowledgeEngine):
                 "Inspeccionar nervadura central de hojas y ramas.",
                 "Podar ramas muy infestadas y quemarlas.",
                 "Aplicar aceite agrícola al 1% o buprofezin (200 g/cilindro).",
-                "Liberar parasitoides: Aphytis lepidosaphes."
+                "Liberar parasitoides: Aphytis lepidosaphes.",
+                "Las escamas tienen forma de coma o mejillón (2-3 mm)."
             ],
-            regla_activada="queresa_coma_completo"
+            regla_activada="queresa_coma_completo",
+            imagen="limon/queresa_coma.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 6: Queresa redonda de los cítricos
-    # ═══════════════════════════════════════════════════════════════
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: len({"escamas_marrones_hojas", "hojas_amarillentas", "muerte_brotes", "debilitamiento_planta"} & s) >= 2),
+        NOT(Diagnostico(plaga="Queresa coma o escama púrpura (Lepidosaphes beckii)"))
+    )
+    def queresa_coma_parcial(self):
+        self.declare(Diagnostico(
+            plaga="Queresa coma o escama púrpura (Lepidosaphes beckii) — sospecha",
+            certeza=0.7,
+            umbral="Más de 10 escamas por hoja",
+            recomendaciones=[
+                "Buscar escamas con forma de coma en hojas, ramas y frutos.",
+                "Color marrón púrpura oscuro, alargadas y curvas.",
+                "Se localizan preferentemente en nervadura central de hojas.",
+                "Altas infestaciones causan amarillamiento y muerte de brotes."
+            ],
+            regla_activada="queresa_coma_parcial",
+            imagen="limon/queresa_coma.jpg"
+        ))
+
+    # 6. QUERESA REDONDA DE LOS CÍTRICOS
+
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
         TEST(lambda s: {"escamas_marrones_hojas", "frutos_con_manchas_oscuras", "debilitamiento_planta"}.issubset(s))
@@ -122,16 +241,37 @@ class ReglasLimon(KnowledgeEngine):
             umbral="Más de 2 mm de diámetro por escama",
             recomendaciones=[
                 "Revisar hojas, ramas y frutos en busca de escamas circulares.",
-                "Aplicar metidation (0.1-0.2%) o imidacloprid (140 ml/cilindro).",
+                "Control químico: metidation (0.1-0.2%) o imidacloprid (140 ml/cilindro).",
                 "Liberar parasitoide Aphytis roseni (1 colonia/ha).",
-                "Usar aceite mineral al 1% en épocas de brotación."
+                "Aplicar aceite mineral al 1% en épocas de brotación.",
+                "Las escamas son circulares, convexas, de color marrón oscuro."
             ],
-            regla_activada="queresa_redonda_completo"
+            regla_activada="queresa_redonda_completo",
+            imagen="limon/queresa_redonda.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 7: Piojo blanco de los cítricos
-    # ═══════════════════════════════════════════════════════════════
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: len({"escamas_marrones_hojas", "frutos_con_manchas_oscuras", "debilitamiento_planta", "hojas_amarillentas"} & s) >= 2),
+        NOT(Diagnostico(plaga="Queresa redonda de los cítricos (Selenaspidus articulatus)"))
+    )
+    def queresa_redonda_parcial(self):
+        self.declare(Diagnostico(
+            plaga="Queresa redonda de los cítricos (Selenaspidus articulatus) — sospecha",
+            certeza=0.7,
+            umbral="Más de 2 mm de diámetro por escama",
+            recomendaciones=[
+                "Buscar escamas circulares de 2-3 mm de diámetro en hojas y frutos.",
+                "Color marrón oscuro con centro más claro (punto excéntrico).",
+                "Causan manchas oscuras en frutos afectando calidad comercial.",
+                "Succionan savia causando debilitamiento general del árbol."
+            ],
+            regla_activada="queresa_redonda_parcial",
+            imagen="limon/queresa_redonda.jpg"
+        ))
+
+    # 7. PIOJO BLANCO DE LOS CÍTRICOS
+
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
         TEST(lambda s: {"escamas_blancas_hojas", "mielada", "fumagina"}.issubset(s))
@@ -145,17 +285,38 @@ class ReglasLimon(KnowledgeEngine):
                 "Inspeccionar envés de hojas y base de frutos.",
                 "Aplicar aceite mineral al 1% o metidation (0.1-0.2%).",
                 "Liberar coccinélidos depredadores: Azya orbigera, Cryptognatha auriculata.",
-                "Realizar podas de ventilación para reducir humedad."
+                "Realizar podas de ventilación para reducir humedad.",
+                "Las escamas blancas son alargadas con forma de pera."
             ],
-            regla_activada="piojo_blanco_completo"
+            regla_activada="piojo_blanco_completo",
+            imagen="limon/piojo_blanco.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 8: Mosca blanca lanuda de los cítricos
-    # ═══════════════════════════════════════════════════════════════
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"moscas_blancas_envés", "mielada", "fumagina", "hojas_amarillentas"}.issubset(s))
+        TEST(lambda s: len({"escamas_blancas_hojas", "mielada", "fumagina", "hojas_amarillentas"} & s) >= 2),
+        NOT(Diagnostico(plaga="Piojo blanco de los cítricos (Pinnaspis aspidistrae)"))
+    )
+    def piojo_blanco_parcial(self):
+        self.declare(Diagnostico(
+            plaga="Piojo blanco de los cítricos (Pinnaspis aspidistrae) — sospecha",
+            certeza=0.7,
+            umbral="Presencia visible en más del 10% de hojas",
+            recomendaciones=[
+                "Buscar escamas blancas alargadas en envés de hojas.",
+                "Secretan mielada que favorece desarrollo de fumagina.",
+                "Se distribuyen preferentemente en ramas sombreadas.",
+                "Altas infestaciones causan amarillamiento de hojas."
+            ],
+            regla_activada="piojo_blanco_parcial",
+            imagen="limon/piojo_blanco.jpg"
+        ))
+
+    # 8. MOSCA BLANCA LANUDA DE LOS CÍTRICOS
+
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: {"moscas_blancas_envés", "mielada", "fumagina"}.issubset(s))
     )
     def mosca_blanca_lanuda_completo(self):
         self.declare(Diagnostico(
@@ -165,141 +326,78 @@ class ReglasLimon(KnowledgeEngine):
             recomendaciones=[
                 "Revisar envés de hojas en busca de ninfas con filamentos cerosos.",
                 "Aplicar lavados con detergente + agua a presión.",
-                "Liberar parasitoides: Cales noacki o Amitus spiniferus.",
-                "Usar buprofezin (100 g/200L) o aceite agrícola al 0.5-1%."
+                "Liberar parasitoide Cales noacki (muy eficiente).",
+                "Control químico: imidacloprid (0.05%) o buprofezin (200 g/200L).",
+                "Las ninfas están cubiertas por cera blanca algodonosa."
             ],
-            regla_activada="mosca_blanca_lanuda_completo"
+            regla_activada="mosca_blanca_lanuda_completo",
+            imagen="limon/mosca_blanca_lanuda.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 9: Mosca negra de los cítricos
-    # ═══════════════════════════════════════════════════════════════
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"moscas_blancas_envés", "fumagina", "frutos_decolorados"}.issubset(s))
+        TEST(lambda s: len({"moscas_blancas_envés", "mielada", "fumagina", "hojas_amarillentas"} & s) >= 2),
+        NOT(Diagnostico(plaga="Mosca blanca lanuda de los cítricos (Aleurothrixus floccosus)"))
     )
-    def mosca_negra_completo(self):
+    def mosca_blanca_lanuda_parcial(self):
         self.declare(Diagnostico(
-            plaga="Mosca negra de los cítricos (Aleurocanthus woglumi)",
+            plaga="Mosca blanca lanuda de los cítricos (Aleurothrixus floccosus) — sospecha",
+            certeza=0.7,
+            umbral="Más de 5 ninfas por hoja",
+            recomendaciones=[
+                "Buscar ninfas con filamentos cerosos blancos en envés de hojas.",
+                "Los adultos son pequeñas moscas blancas que levantan vuelo al sacudir hojas.",
+                "Secretan abundante mielada que favorece fumagina.",
+                "La fumagina reduce fotosíntesis y afecta calidad de frutos."
+            ],
+            regla_activada="mosca_blanca_lanuda_parcial",
+            imagen="limon/mosca_blanca_lanuda.jpg"
+        ))
+
+    # 9. TRIPS DE LOS CÍTRICOS
+
+    @Rule(
+        Caso(cultivo="limon", sintomas=MATCH.s),
+        TEST(lambda s: {"frutos_deformados", "frutos_plateados", "cáscara_agrietada"}.issubset(s))
+    )
+    def trips_citricos_completo(self):
+        self.declare(Diagnostico(
+            plaga="Trips de los cítricos (Scirtothrips citri)",
             certeza=1.0,
-            umbral="Más de 10 ninfas por hoja",
+            umbral="Presencia en floración y cuajado",
             recomendaciones=[
-                "Inspeccionar envés de hojas por ninfas negras brillantes.",
-                "Liberar parasitoide Encarsia perplexa (altamente eficiente).",
-                "Aplicar aceite agrícola al 1% + detergente.",
-                "Realizar podas de saneamiento en focos de infestación."
+                "Inspeccionar flores y frutos pequeños en busca de trips.",
+                "Aplicar aceite agrícola al 0.5% durante floración.",
+                "Control químico: spinosad (48%) 100-150 ml/200L o imidacloprid.",
+                "Monitorear con trampas adhesivas azules.",
+                "El daño en frutos jóvenes causa cicatrices plateadas permanentes."
             ],
-            regla_activada="mosca_negra_completo"
+            regla_activada="trips_citricos_completo",
+            imagen="limon/trips.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 10: Cochinilla harinosa de los cítricos
-    # ═══════════════════════════════════════════════════════════════
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"insectos_algodonosos", "mielada", "frutos_deformados"}.issubset(s))
+        TEST(lambda s: len({"frutos_deformados", "frutos_plateados", "cáscara_agrietada", "frutos_decolorados"} & s) >= 2),
+        NOT(Diagnostico(plaga="Trips de los cítricos (Scirtothrips citri)"))
     )
-    def cochinilla_harinosa_completo(self):
+    def trips_citricos_parcial(self):
         self.declare(Diagnostico(
-            plaga="Cochinilla harinosa de los cítricos (Planococcus citri)",
-            certeza=1.0,
-            umbral="Presencia en frutos o cáliz",
+            plaga="Trips de los cítricos (Scirtothrips citri) — sospecha",
+            certeza=0.65,
+            umbral="Presencia en floración y cuajado",
             recomendaciones=[
-                "Revisar cáliz de frutos y zona de contacto entre frutos.",
-                "Aplicar buprofezin (200 g/200L) o aceite mineral al 1%.",
-                "Liberar parasitoides: Coccidoxenoides peregrinus o Leptomastidea abnormis.",
-                "Fomentar presencia de Cryptolaemus montrouzieri (coccinélido depredador)."
+                "Buscar pequeños insectos alargados (1-2 mm) de color amarillo pálido.",
+                "Atacan flores, frutos recién cuajados y brotes tiernos.",
+                "El daño aparece como plateado o bronceado en cáscara.",
+                "Periodo crítico: desde floración hasta 6-8 semanas post-cuajado."
             ],
-            regla_activada="cochinilla_harinosa_completo"
+            regla_activada="trips_citricos_parcial",
+            imagen="limon/trips.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 11: Ácaro hialino
-    # ═══════════════════════════════════════════════════════════════
-    @Rule(
-        Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"frutos_plateados", "hojas_deformadas", "frutos_deformados"}.issubset(s))
-    )
-    def acaro_hialino_completo(self):
-        self.declare(Diagnostico(
-            plaga="Ácaro hialino (Polyphagotarsonemus latus)",
-            certeza=1.0,
-            umbral="Presencia de ácaro en brotes tiernos",
-            recomendaciones=[
-                "Inspeccionar base de frutos pequeños (1 pulgada de diámetro).",
-                "Aplicar spirodiclofen (Envidor 240 SC al 0.03%).",
-                "Usar spiromesifen (Oberon 240 SC, 300-500 ml/ha).",
-                "Realizar aplicaciones preventivas durante fructificación temprana."
-            ],
-            regla_activada="acaro_hialino_completo"
-        ))
+    # 10. COCHINILLA ACANALADA (QUERESA BLANCA ALGODONOSA)
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 12: Queresa verde
-    # ═══════════════════════════════════════════════════════════════
-    @Rule(
-        Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"escamas_marrones_hojas", "mielada", "debilitamiento_planta"}.issubset(s))
-    )
-    def queresa_verde_completo(self):
-        self.declare(Diagnostico(
-            plaga="Queresa verde (Coccus viridis)",
-            certeza=0.9,
-            umbral="Más de 5 escamas por hoja",
-            recomendaciones=[
-                "Revisar ramas, brotes y hojas por escamas verdes ovaladas.",
-                "Aplicar aceite agrícola al 1% durante brotación-floración.",
-                "Liberar parasitoides: Metaphycus luteolus (2 colonias/ha).",
-                "Fomentar larvas de sirfidos Eosalpingogaster nigriventris (depredador)."
-            ],
-            regla_activada="queresa_verde_completo"
-        ))
-
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 13: Gusano perro del naranjo (Heraclides thoas)
-    # ═══════════════════════════════════════════════════════════════
-    @Rule(
-        Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"hojas_deformadas", "debilitamiento_planta"}.issubset(s))
-    )
-    def gusano_perro_completo(self):
-        self.declare(Diagnostico(
-            plaga="Gusano perro del naranjo (Heraclides thoas nealces)",
-            certeza=0.85,
-            umbral="Presencia de larvas en viveros o plantas jóvenes",
-            recomendaciones=[
-                "Realizar recolección manual de larvas grandes.",
-                "Aplicar Bacillus thuringiensis (500 g/ha).",
-                "Usar triflumuron (Alsystin 480 SC, 50 ml/cilindro).",
-                "Monitorear presencia de parasitoide Pteromalus sp. en pupas."
-            ],
-            regla_activada="gusano_perro_completo"
-        ))
-
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 14: Queresa cerosa
-    # ═══════════════════════════════════════════════════════════════
-    @Rule(
-        Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"escamas_blancas_hojas", "fumagina", "mielada"}.issubset(s))
-    )
-    def queresa_cerosa_completo(self):
-        self.declare(Diagnostico(
-            plaga="Queresa cerosa (Ceroplastes floridensis)",
-            certeza=0.9,
-            umbral="Más de 3 escamas por hoja",
-            recomendaciones=[
-                "Inspeccionar hojas y ramillas por escamas blancas en forma de estrella.",
-                "Aplicar aceite agrícola al 1% en plantas muy infestadas.",
-                "Liberar parasitoides: Coccophagus caridei o Anicetus quintanai.",
-                "Fomentar presencia de Scutellista cyanea (depredador de huevos)."
-            ],
-            regla_activada="queresa_cerosa_completo"
-        ))
-
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 15: Queresa blanca algodonosa (cochinilla acanalada)
-    # ═══════════════════════════════════════════════════════════════
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
         TEST(lambda s: {"insectos_algodonosos", "fumagina", "hojas_amarillentas"}.issubset(s))
@@ -307,118 +405,59 @@ class ReglasLimon(KnowledgeEngine):
     def cochinilla_acanalada_completo(self):
         self.declare(Diagnostico(
             plaga="Cochinilla acanalada (Icerya purchasi)",
-            certeza=0.95,
+            certeza=1.0,
             umbral="Presencia de ovisacos visibles",
             recomendaciones=[
                 "Revisar ramas y tronco por ovisacos algodonosos blancos.",
-                "Liberar coccinélido Rodolia cardinalis (muy eficiente).",
-                "Aplicar aceite agrícola al 1% en focos específicos.",
-                "Evitar uso de insecticidas de amplio espectro."
+                "Liberar coccinélido Rodolia cardinalis (control biológico muy eficiente).",
+                "Aplicar aceite agrícola al 1% solo en focos específicos.",
+                "EVITAR insecticidas de amplio espectro que afectan Rodolia.",
+                "Los ovisacos son acanalados, blancos y contienen hasta 1000 huevos."
             ],
-            regla_activada="cochinilla_acanalada_completo"
+            regla_activada="cochinilla_acanalada_completo",
+            imagen="limon/cochinilla_acanalada.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 16: Pulgón verde de los cítricos
-    # ═══════════════════════════════════════════════════════════════
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"pulgones_brotes", "hojas_enrolladas", "mielada"}.issubset(s))
+        TEST(lambda s: len({"insectos_algodonosos", "fumagina", "hojas_amarillentas", "debilitamiento_planta"} & s) >= 2),
+        NOT(Diagnostico(plaga="Cochinilla acanalada (Icerya purchasi)"))
     )
-    def pulgon_verde_completo(self):
+    def cochinilla_acanalada_parcial(self):
         self.declare(Diagnostico(
-            plaga="Pulgón verde de los cítricos (Aphis spiraecola)",
-            certeza=0.9,
-            umbral="Colonias en más del 5% de brotes",
+            plaga="Cochinilla acanalada (Icerya purchasi) — sospecha",
+            certeza=0.75,
+            umbral="Presencia de ovisacos visibles",
             recomendaciones=[
-                "Revisar brotes tiernos y flores por pulgones verde amarillentos.",
-                "Aplicar jabón potásico al 1% o aceite mineral al 0.5%.",
-                "Liberar depredadores: Cycloneda sanguinea, Paraneda pallidula.",
-                "Usar imidacloprid (0.05%) o thiamethoxam (50-75 g/200L)."
+                "Buscar ovisacos blancos acanalados en ramas y tronco.",
+                "Las hembras son rojizas con patas y antenas negras.",
+                "Secretan abundante mielada que favorece fumagina.",
+                "Rodolia cardinalis es el control biológico más efectivo del mundo."
             ],
-            regla_activada="pulgon_verde_completo"
+            regla_activada="cochinilla_acanalada_parcial",
+            imagen="limon/cochinilla_acanalada.jpg"
         ))
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 17: Queresa negra del olivo
-    # ═══════════════════════════════════════════════════════════════
-    @Rule(
-        Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"escamas_marrones_hojas", "fumagina", "muerte_brotes"}.issubset(s))
-    )
-    def queresa_negra_completo(self):
-        self.declare(Diagnostico(
-            plaga="Queresa negra del olivo (Saissetia oleae)",
-            certeza=0.85,
-            umbral="Más de 5 escamas por hoja con forma de H",
-            recomendaciones=[
-                "Inspeccionar hojas, ramas y tronco por escamas con crestas en H.",
-                "Aplicar aceite agrícola al 1% en plantas infestadas.",
-                "Liberar parasitoides: Metaphycus helvolus o Metaphycus lounsburyi.",
-                "Fomentar presencia de Scutellista cyanea (depredador de huevos)."
-            ],
-            regla_activada="queresa_negra_completo"
-        ))
+    # SIN DIAGNÓSTICO (REGLA 21)
 
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 18: Ortézidos (queresa blanca)
-    # ═══════════════════════════════════════════════════════════════
     @Rule(
         Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"escamas_blancas_hojas", "fumagina", "debilitamiento_planta"}.issubset(s))
+        NOT(Diagnostico())
     )
-    def ortezidos_completo(self):
+    def sin_diagnostico(self):
         self.declare(Diagnostico(
-            plaga="Ortézidos (Praelongaorthezia praelonga)",
-            certeza=0.9,
-            umbral="Presencia de ovisacos blancos pulverulentos",
+            plaga="Sin plaga o enfermedad identificada",
+            certeza=0.0,
+            umbral="N/A",
             recomendaciones=[
-                "Revisar envés de hojas, ramas y tronco.",
-                "Eliminar malezas alrededor del cultivo (reservorio).",
-                "Aplicar buprofezin (Applaud, 200 g/200L).",
-                "Liberar depredadores: Eosalpingogaster sp. (sirfido)."
+                "No se detectaron síntomas compatibles con plagas principales en limón.",
+                "Considerar deficiencias nutricionales: N (hojas amarillas), Fe (clorosis), Zn (hojas pequeñas).",
+                "Verificar condiciones de riego: exceso causa pudrición de raíces, déficit causa estrés.",
+                "Evaluar pH del suelo: limón prefiere pH 5.5-6.5.",
+                "Consultar con especialista en cítricos para diagnóstico detallado.",
+                "Considerar análisis foliar y de suelo para detectar deficiencias.",
+                "Revisar la guía técnica de plagas en cítricos (Carrillo, 2020)."
             ],
-            regla_activada="ortezidos_completo"
-        ))
-
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 19: Mosca mediterránea de la fruta (ocasional en limón)
-    # ═══════════════════════════════════════════════════════════════
-    @Rule(
-        Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"frutos_con_manchas_oscuras", "frutos_deformados"}.issubset(s))
-    )
-    def mosca_mediterranea_parcial(self):
-        self.declare(Diagnostico(
-            plaga="Mosca mediterránea de la fruta (Ceratitis capitata)",
-            certeza=0.7,
-            umbral="Más de 0.5 moscas/trampa/día (MTD)",
-            recomendaciones=[
-                "Colocar trampas Jackson con Trimledure (1 trampa/4 ha).",
-                "Recoger y enterrar frutos caídos.",
-                "Aplicar cebos tóxicos: buminal + malathion (4 por mil).",
-                "Usar trampas McPhail con atrayentes alimenticios."
-            ],
-            regla_activada="mosca_mediterranea_parcial"
-        ))
-
-    # ═══════════════════════════════════════════════════════════════
-    # REGLA 20: Síntomas generales inespecíficos
-    # ═══════════════════════════════════════════════════════════════
-    @Rule(
-        Caso(cultivo="limon", sintomas=MATCH.s),
-        TEST(lambda s: {"debilitamiento_planta", "hojas_amarillentas"}.issubset(s) and len(s) <= 2)
-    )
-    def sintomas_generales(self):
-        self.declare(Diagnostico(
-            plaga="Diagnóstico inconcluso - síntomas generales",
-            certeza=0.5,
-            umbral="No aplicable",
-            recomendaciones=[
-                "Realizar inspección detallada en busca de insectos o ácaros.",
-                "Verificar si hay presencia de mielada, fumagina o escamas.",
-                "Revisar condiciones de riego, nutrición y pH del suelo.",
-                "Consultar con un técnico agrónomo para diagnóstico preciso."
-            ],
-            regla_activada="sintomas_generales"
+            regla_activada="sin_diagnostico",
+            imagen=None
         ))
