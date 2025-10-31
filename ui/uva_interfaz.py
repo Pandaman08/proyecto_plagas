@@ -81,7 +81,7 @@ def mostrar_diagnostico_uva(CULTIVOS):
         # Mostrar imagen si existe
         if diag.get("imagen"):
             try:
-                st.image(f"images/{diag['imagen']}", caption=f"Imagen de {diag['plaga']}", use_column_width=True)
+                st.image(f"images/{diag['imagen']}", caption=f"Imagen de {diag['plaga']}", use_container_width=True)
             except Exception:
                 st.warning("Imagen no disponible. Asegúrese de tener la carpeta 'images' con el archivo correspondiente.")
 
