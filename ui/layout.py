@@ -3,6 +3,8 @@ from ui.palta_interfaz import mostrar_diagnostico_palta
 from ui.piña_interfaz import mostrar_diagnostico_piña
 from ui.uva_interfaz import mostrar_diagnostico_uva
 from ui.limon_interfaz import mostrar_diagnostico_limon
+from ui.cafe_interfaz import mostrar_diagnostico_cafe
+from ui.cacao_interfaz import mostrar_diagnostico_cacao
 # ───────────────────────────────────────────────
 # ESTILOS CSS PERSONALIZADOS
 # ───────────────────────────────────────────────
@@ -219,8 +221,48 @@ CULTIVOS = {
         ],
         "descripcion": "Diagnóstico basado en guías técnicas oficiales: PortalFruticola (2023) y Solagro (2024) para el cultivo de palta."
     },
-    "Café": {"sintomas": ["ojos_de_gallo", "roya", "broca"], "descripcion": "Próximamente disponible."},
-    "Cacao": {"sintomas": ["monilia", "escoba_de_bruja", "mal_de_macho"], "descripcion": "Próximamente disponible."},
+    "Café": {
+        "sintomas": [
+            "frutos_perforados",
+            "granos_dañados",
+            "cerezas_caidas",
+            "manchas_amarillas_envés",
+            "caida_hojas",
+            "polvo_naranja",
+            "amarillamiento_hojas",
+            "marchitez_plantas",
+            "muerte_plantas",
+            "hormigas_cuello_tallo",
+            "minas_serpentinas_hojas",
+            "defoliacion",
+            "hojas_necroticas",
+            "hojas_bronceadas",
+            "telaraña_envés",
+            "epoca_seca",
+            "manchas_necroticas_hojas",
+            "plantulas_debiles"
+        ],
+        "descripcion": "Diagnóstico basado en CENICAFE Colombia, SENASA Perú e INIA (2022)."
+    },
+    "Cacao": {
+        "sintomas": [
+            "manchas_oscuras_mazorca",
+            "polvo_blanco",
+            "pudricion_fruto",
+            "alta_humedad_ambiente",
+            "temperatura_optima",
+            "brotes_anormales",
+            "hipertrofia_cojines",
+            "escobas_secas",
+            "mazorcas_perforadas",
+            "galerias_internas",
+            "adulto_volador_presente",
+            "manchas_negras_mazorca",
+            "pudricion_rapida",
+            "lluvia_reciente"
+        ],
+        "descripcion": "Diagnóstico basado en INIAP Ecuador y AGROSAVIA Colombia (2014-2022)."
+    },
     "Papa": {"sintomas": ["tizón_tardio", "nematodos", "pulgones"], "descripcion": "Próximamente disponible."},
     "Arroz": {"sintomas": ["hoja_blanca", "piricularia", "gusano_cogollero"], "descripcion": "Próximamente disponible."},
     "Uva": {
@@ -296,6 +338,10 @@ def mostrar_interfaz():
         mostrar_diagnostico_limon(CULTIVOS)
     elif cultivo_seleccionado == "Palta":
         mostrar_diagnostico_palta(CULTIVOS)
+    elif cultivo_seleccionado == "Café":
+        mostrar_diagnostico_cafe(CULTIVOS)
+    elif cultivo_seleccionado == "Cacao":
+        mostrar_diagnostico_cacao(CULTIVOS)
     else:
         st.info(f"El módulo de diagnóstico para **{cultivo_seleccionado}** estará disponible en una próxima actualización.")
         st.image("https://placehold.co/600x200/e8f5e9/2e7d32?text=Próximamente", use_column_width=True)
