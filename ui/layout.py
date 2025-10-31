@@ -27,10 +27,10 @@ def inject_custom_css():
         margin-bottom: 25px;
     }
 
-    /* Sidebar */
+    /* Sidebar - usa variable de Streamlit */
     [data-testid="stSidebar"] {
-        color: #000000;
-        background-color: #f1f8e9;
+        color: var(--textColor);
+        background-color: var(--secondaryBackgroundColor);
         padding: 15px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -41,13 +41,13 @@ def inject_custom_css():
         text-transform: uppercase;
     }
     [data-testid="stSidebar"] .stSelectbox label {
-        color: #000000;
+        color: var(--textColor);
         font-weight: 600;
     }
 
-    /* Botones */
+    /* Botones - usa primaryColor */
     .stButton>button {
-        background-color: #4caf50;
+        background-color: var(--primaryColor);
         color: white;
         border: none;
         border-radius: 8px;
@@ -57,19 +57,19 @@ def inject_custom_css():
         transition: background-color 0.2s;
     }
     .stButton>button:hover {
-        background-color: #388e3c;
+        background-color: #388e3c; /* Puedes ajustar este hover si quieres mantenerlo fijo */
         color: white;
     }
 
     /* Tarjetas de diagnóstico */
     .diagnostic-card {
-        color: #000000;
-        background: white;
+        color: var(--textColor);
+        background: var(--backgroundColor);
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         margin-top: 20px;
-        border-left: 4px solid #4caf50;
+        border-left: 4px solid var(--primaryColor);
     }
 
     /* Footer */
@@ -87,9 +87,22 @@ def inject_custom_css():
         font-weight: 600;
         color: #2e7d32;
     }
+
+    /* Modo oscuro: ajusta colores específicos si es necesario */
+    @media (prefers-color-scheme: dark) {
+        .main-header {
+            color: #bbdefb;
+        }
+        .main-subheader {
+            color: #81c784;
+        }
+        .footer {
+            color: #aaa;
+            border-top: 1px solid #444;
+        }
+    }
     </style>
     """, unsafe_allow_html=True)
-
 # ───────────────────────────────────────────────
 # CONFIGURACIÓN DE CULTIVOS Y SÍNTOMAS
 # ───────────────────────────────────────────────
