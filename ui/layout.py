@@ -1,6 +1,5 @@
 import streamlit as st
 from ui.palta_interfaz import mostrar_diagnostico_palta
-from ui.piña_interfaz import mostrar_diagnostico_piña
 from ui.uva_interfaz import mostrar_diagnostico_uva
 from ui.limon_interfaz import mostrar_diagnostico_limon
 from ui.cafe_interfaz import mostrar_diagnostico_cafe
@@ -147,72 +146,60 @@ CULTIVOS = {
         ],
         "descripcion": "Carrillo, P. S. C. (2020). Insectos y ácaros plagas de cítricos con énfasis en el cultivo de limón sutil. Editorial Académica Española."
     },
-    "Piña": {
-        "sintomas": [
-            "marchitez",
-            "enrojecimiento_foliar",
-            "raices_dañadas",
-            "retraso_crecimiento",
-            "colonias_algodonosas",
-            "enrollamiento_hojas",
-            "hormigas"
-        ],
-        "descripcion": "Diagnóstico basado en la Guía SENASA (2020) para el cultivo de piña."
-    },
     "Palta": {
         "sintomas": [            
-            # 1. Trips del Palto (4 síntomas)
+            # 1. Trips del Palto
             "raspado_frutos",
             "rugosidad_frutos",
             "bronceado_frutos",
             "deformacion_frutos",
             
-            # 2. Arañita Roja/Marrón (5 síntomas)
+            # 2. Arañita Roja/Marrón
             "tostado_hojas",
             "hojas_rojizas",
             "perdida_clorofila",
             "bronceado_hojas",
             "defoliacion_prematura",
             
-            # 3. Mosca Blanca de los Brotes (4 síntomas)
+            # 3. Mosca Blanca de los Brotes
             "perforacion_brotes",
             "fumagina",
             "debilitamiento_planta",
             "hojas_pegajosas",
             
-            # 4. Queresas Fiorinia (3 síntomas)
+            # 4. Queresas Fiorinia
             "escamas_marron_frutos",
             "escamas_marron_hojas",
             "secamiento_hojas",
             
-            # 5. Queresas Hemiberlesia (2 síntomas)
+            # 5. Queresas Hemiberlesia
             "escamas_blancas_pedunculo",
             "escamas_circulares_frutos",
             
-            # 6. Mosca Blanca Espiral (3 síntomas)
+            # 6. Mosca Blanca Espiral
             "espirales_cera_hojas",
             "huevos_desordenados_enves",
             "cobertura_cera_hojas",
             
-            # 7. Bicho del Cesto (3 síntomas)
+            # 7. Bicho del Cesto
             "cestos_colgantes_hojas",
             "raspado_epidermis_hojas",
             "larvas_con_refugio",
             
-            # 8. Tristeza del Palto (5 síntomas)
+            # 8. Tristeza del Palto
             "hojas_amarillas",
             "defoliacion",
             "raices_necrosadas",
             "frutos_pequenos",
             "muerte_regresiva",
             
-            # 9. Brazo Negro (4 síntomas)
+            # 9. Brazo Negro
             "cancros_tronco",
             "exudados_blancos",
             "muerte_ramas",
             "pudricion_frutos_pedunculo",
             
-            # 10. Sunblotch (5 síntomas)
+            # 10. Sunblotch
             "manchas_amarillas_fruto",
             "variegado_hojas",
             "moteado_hojas",
@@ -264,7 +251,6 @@ CULTIVOS = {
         "descripcion": "Diagnóstico basado en INIAP Ecuador y AGROSAVIA Colombia (2014-2022)."
     },
     "Papa": {"sintomas": ["tizón_tardio", "nematodos", "pulgones"], "descripcion": "Próximamente disponible."},
-    "Arroz": {"sintomas": ["hoja_blanca", "piricularia", "gusano_cogollero"], "descripcion": "Próximamente disponible."},
     "Uva": {
         "sintomas": [
             "verrugas_hojas",
@@ -330,12 +316,10 @@ def mostrar_interfaz():
     st.subheader(f"🪴 {cultivo_seleccionado}")
     st.caption(info["descripcion"])
 
-    if cultivo_seleccionado == "Piña":
-        mostrar_diagnostico_piña(CULTIVOS)
+    if cultivo_seleccionado == "Limon":
+        mostrar_diagnostico_limon(CULTIVOS)
     elif cultivo_seleccionado == "Uva":
         mostrar_diagnostico_uva(CULTIVOS)
-    elif cultivo_seleccionado == "Limon":
-        mostrar_diagnostico_limon(CULTIVOS)
     elif cultivo_seleccionado == "Palta":
         mostrar_diagnostico_palta(CULTIVOS)
     elif cultivo_seleccionado == "Café":
