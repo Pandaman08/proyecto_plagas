@@ -32,7 +32,7 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar imidacloprid (Confidor) a 100 ml/200L si hay ataque."
             ],
             regla_activada="filoxera_completa",
-            imagen="uva/filoxera.jpg"
+            imagen="uva/Filóxera_uva.jpg"
         ))
 
     @Rule(
@@ -51,7 +51,7 @@ class ReglasUva(KnowledgeEngine):
                 "Implementar medidas preventivas inmediatas."
             ],
             regla_activada="filoxera_parcial",
-            imagen="uva/filoxera.jpg"
+            imagen="uva/Filóxera_uva.jpg"
         ))
 
     # --- ARAÑITA ROJA ---
@@ -71,7 +71,7 @@ class ReglasUva(KnowledgeEngine):
                 "Rotar acaricidas: Dicofol, Abamectina, Azocyclotin."
             ],
             regla_activada="aranita_roja_completa",
-            imagen="uva/aranita_roja.webp"
+            imagen="uva/aranita_roja01.jpg"
         ))
 
     @Rule(
@@ -109,7 +109,7 @@ class ReglasUva(KnowledgeEngine):
                 "Usar aceite agrícola + Azocyclotin o Abamectina si hay ataque."
             ],
             regla_activada="acaro_hialino_completa",
-            imagen="uva/aranita_roja.webp"
+            imagen="uva/acaro_blanco.jpeg"
         ))
 
     @Rule(
@@ -128,7 +128,7 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar azufre preventivo."
             ],
             regla_activada="acaro_hialino_parcial",
-            imagen="uva/aranita_roja.webp"
+            imagen="uva/aranita_blanco.webp"
         ))
 
     # --- AVES ---
@@ -148,7 +148,7 @@ class ReglasUva(KnowledgeEngine):
                 "Ahuyentar con espantapájaros o sonidos."
             ],
             regla_activada="aves_completa",
-            imagen="uva/oidium.jpeg"
+            imagen="uva/aves.webp"
         ))
 
     @Rule(
@@ -167,7 +167,7 @@ class ReglasUva(KnowledgeEngine):
                 "Instalar medidas de protección preventivas."
             ],
             regla_activada="picaduras_generales",
-            imagen="uva/oidium.jpeg"
+            imagen="uva/aves_sopecha.jpg"
         ))
 
     # --- AVISPAS Y ABEJAS ---
@@ -187,7 +187,8 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar Malathion localizado si es necesario."
             ],
             regla_activada="avispas_abejas_completa",
-            imagen="uva/oidium_avispa.jpg"
+            imagen1="uva/abejas.webp",
+            imagen2="uva/oidium_avispa.jpg"
         ))
 
     @Rule(
@@ -206,7 +207,8 @@ class ReglasUva(KnowledgeEngine):
                 "Instalar protecciones en racimos."
             ],
             regla_activada="bayas_vacias_parcial",
-            imagen="uva/oidium_avispa.jpg"
+            imagen1="uvaa/avispa_sospecha.jpg",
+            imagen2="uva/abejas_sospecha.jpg"
         ))
 
     # --- RATAS Y RATONES ---
@@ -225,7 +227,7 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar rodenticidas anticoagulantes (Cumatetralil, Difetialone) en cebos."
             ],
             regla_activada="ratas_raton_completa",
-            imagen="uva/oidium.jpeg"
+            imagen="uva/raton.png"
         ))
 
     @Rule(
@@ -244,7 +246,7 @@ class ReglasUva(KnowledgeEngine):
                 "Colocar trampas para confirmar presencia."
             ],
             regla_activada="ratas_raton_parcial",
-            imagen="uva/oidium.jpeg"
+            imagen="uva/raton.png"
         ))
 
     # --- GUSANO CORNUDO ---
@@ -282,7 +284,7 @@ class ReglasUva(KnowledgeEngine):
                 "Documentar características del insecto si lo encuentra."
             ],
             regla_activada="hojas_consumidas_parcial",
-            imagen="uva/aranita_roja.webp"
+            imagen="uva/gusano_cornudo01.jpg"
         ))
 
     # --- NEMATODOS ---
@@ -321,7 +323,7 @@ class ReglasUva(KnowledgeEngine):
                 "Implementar medidas preventivas con estiércol."
             ],
             regla_activada="nematodos_parcial",
-            imagen="uva/nematodos.jpg"
+            imagen="uva/nematodos01.jpg"
         ))
 
     # --- OIDIO (OIDIUM) ---
@@ -341,7 +343,7 @@ class ReglasUva(KnowledgeEngine):
                 "Tratamientos en: brotes 10cm, inicio floración, envero."
             ],
             regla_activada="oidium_completa",
-            imagen="uva/oidium.jpeg"
+            imagen="uva/oidio.webp"
         ))
 
     @Rule(
@@ -360,7 +362,7 @@ class ReglasUva(KnowledgeEngine):
                 "Evitar riego excesivo y mantener ventilación."
             ],
             regla_activada="oidium_parcial",
-            imagen="uva/oidium.jpeg"
+            imagen="uva/oidio01.jpeg"
         ))
 
     # --- PODREDUMBRE GRIS ---
@@ -399,7 +401,7 @@ class ReglasUva(KnowledgeEngine):
                 "Iniciar aplicación preventiva de fungicidas."
             ],
             regla_activada="podredumbre_gris_parcial",
-            imagen="uva/podredumbre_gris.jpg"
+            imagen="uva/podredumbre_gris01.jpg"
         ))
 
     @Rule(
@@ -418,7 +420,7 @@ class ReglasUva(KnowledgeEngine):
                 "Puede ser daño secundario por insectos o aves."
             ],
             regla_activada="racimos_podridos_general",
-            imagen="uva/podredumbre_gris.jpg"
+            imagen="uva/podredumbre_podrido.jpg"
         ))
 
     # --- AGALLA DE LA CORONA ---
@@ -457,7 +459,7 @@ class ReglasUva(KnowledgeEngine):
                 "Evitar propagar material de esta planta."
             ],
             regla_activada="agalla_corona_parcial",
-            imagen="uva/agalla_corona.jpg"
+            imagen="uva/agalla_corona_tumor.jpg"
         ))
 
     # --- DEFICIENCIA NUTRICIONAL ---
@@ -514,7 +516,7 @@ class ReglasUva(KnowledgeEngine):
                 "Evitar compactación del suelo."
             ],
             regla_activada="problema_raices",
-            imagen="uva/problema_raices.jpg"
+            imagen="uva/problema_radicular.png"
         ))
 
     # --- ESTRÉS AMBIENTAL ---
@@ -552,7 +554,7 @@ class ReglasUva(KnowledgeEngine):
                 "Capacitarse en técnicas de manejo del viñedo."
             ],
             regla_activada="manejo_cultivo",
-            imagen="uva/manejo_cultivo.jpg"
+            imagen="uva/racimos_desiguales.jpg"
         ))
 
     # --- SIN DIAGNÓSTICO ---
