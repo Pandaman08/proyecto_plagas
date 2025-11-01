@@ -128,7 +128,7 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar azufre preventivo."
             ],
             regla_activada="acaro_hialino_parcial",
-            imagen="uva/aranita_blanco.webp"
+            imagen="uva/acaro_blanco_sospecha.webp"
         ))
 
     # --- AVES ---
