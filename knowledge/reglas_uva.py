@@ -362,7 +362,7 @@ class ReglasUva(KnowledgeEngine):
                 "Evitar riego excesivo y mantener ventilación."
             ],
             regla_activada="oidium_parcial",
-            imagen="uva/oidio01.jpeg"
+            imagen="uva/oidio01.jpg"
         ))
 
     # --- PODREDUMBRE GRIS ---
