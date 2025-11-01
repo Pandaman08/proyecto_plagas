@@ -71,12 +71,12 @@ class ReglasUva(KnowledgeEngine):
                 "Rotar acaricidas: Dicofol, Abamectina, Azocyclotin."
             ],
             regla_activada="aranita_roja_completa",
-            imagen="uva/arañita_roja01.jpg"
+            imagen="uva/aranita_roja.jpg"
         ))
 
     @Rule(
         Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "hojas_gris_plomizo" in s and not "tejido_araña" in s),
+        TEST(lambda s: "hojas_gris_plomizo" in s or "tejido_araña" in s),
         NOT(Diagnostico(plaga="Arañita roja (Panonychus ulmi / Tetranynchus sp.)"))
     )
     def aranita_roja_parcial(self):
@@ -153,7 +153,7 @@ class ReglasUva(KnowledgeEngine):
 
     @Rule(
         Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "picaduras_racimos" in s and not "aves_presentes" in s and not "avispa_presencia" in s),
+        TEST(lambda s: "picaduras_racimos" in s and ("aves_presentes" in s or "avispa_presencia" in s)),
         NOT(Diagnostico(plaga="Aves (cuculíes, madrugadoras)"))
     )
     def picaduras_generales(self):
@@ -167,7 +167,7 @@ class ReglasUva(KnowledgeEngine):
                 "Instalar medidas de protección preventivas."
             ],
             regla_activada="picaduras_generales",
-            imagen="uva/aves_sopecha.jpg"
+            imagen="uva/aves_sopescha.jpg"
         ))
 
     # --- AVISPAS Y ABEJAS ---
@@ -187,13 +187,12 @@ class ReglasUva(KnowledgeEngine):
                 "Aplicar Malathion localizado si es necesario."
             ],
             regla_activada="avispas_abejas_completa",
-            imagen1="uva/abejas.webp",
-            imagen2="uva/oidium_avispa.jpg"
+            imagen="uva/abejas.webp",
         ))
 
     @Rule(
         Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "bayas_vacias" in s and not "avispa_presencia" in s),
+        TEST(lambda s: "bayas_vacias" in s or  "avispa_presencia" in s),
         NOT(Diagnostico(plaga="Avispas y abejas (Polistes spp., Apis mellifera)"))
     )
     def bayas_vacias_parcial(self):
@@ -207,8 +206,7 @@ class ReglasUva(KnowledgeEngine):
                 "Instalar protecciones en racimos."
             ],
             regla_activada="bayas_vacias_parcial",
-            imagen1="uvaa/avispa_sospecha.jpg",
-            imagen2="uva/abejas_sospecha.jpg"
+            imagen="uva/avispa_sospecha.jpg",
         ))
 
     # --- RATAS Y RATONES ---
@@ -270,7 +268,7 @@ class ReglasUva(KnowledgeEngine):
 
     @Rule(
         Caso(cultivo="uva", sintomas=MATCH.s),
-        TEST(lambda s: "hojas_consumidas" in s and not "gusano_grande" in s),
+        TEST(lambda s: "hojas_consumidas" in s or  "gusano_grande" in s),
         NOT(Diagnostico(plaga="Gusano cornudo (Pholus vitis)"))
     )
     def hojas_consumidas_parcial(self):
