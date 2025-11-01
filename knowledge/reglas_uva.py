@@ -71,7 +71,7 @@ class ReglasUva(KnowledgeEngine):
                 "Rotar acaricidas: Dicofol, Abamectina, Azocyclotin."
             ],
             regla_activada="aranita_roja_completa",
-            imagen="uva/aranita_roja01.jpg"
+            imagen="uva/arañita_roja01.jpg"
         ))
 
     @Rule(
